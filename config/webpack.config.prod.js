@@ -4,25 +4,26 @@ const baseWebpackConfig = require('./webpack.config.base');
 
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin'); // 引入清除文件插件
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = merge(baseWebpackConfig, {
     // 模式
-    mode: "production",
+    mode: 'production',
     // 调试工具
     devtool: '#source-map',
     // 输出
     output: {
         path: path.resolve(__dirname, '../dist'),
-        filename: "js/[name].[chunkhash].js",
+        filename: 'js/[name].[chunkhash].js',
     },
     // 插件
     plugins: [
-        new CleanWebpackPlugin(['dist', 'build'], {
-            root: path.resolve(__dirname, '../'),
-        }),
-        new webpack.HashedModuleIdsPlugin(),
+        // new CleanWebpackPlugin(['dist'], {
+        //     root: path.resolve(__dirname, '../') // webpack打包报错：clean-webpack-plugin only accepts an options object
+        // }),
+        new CleanWebpackPlugin(),
+        new webpack.HashedModuleIdsPlugin()
     ],
     // 代码分离相关
     optimization: {
