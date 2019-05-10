@@ -13,9 +13,11 @@ const pathResolve = (dir) => path.resolve(__dirname, dir);
 
 module.exports = {
     // 入口起点
-    entry: {
-        app: './src/index.js'
-    },
+    entry: [
+        'babel-polyfill',
+        'react-hot-loader/patch',
+        srcDir + '/index.js'
+    ],
     // 输出
     output: {
         path: pathResolve('../dist'),
@@ -24,9 +26,21 @@ module.exports = {
     // 解析
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
-        alias: {
-            '@': pathJoin('src')
-        }
+        alias: { // import xxx from 'components/xxx'
+            '@': pathJoin('src'),
+            components: path.join(srcDir, 'components'),
+            layouts: path.join(srcDir, 'layouts'),
+            module: path.join(srcDir, 'module'),
+            utils: path.join(srcDir, 'utils')
+        },
+    },
+    externals: {
+        React: 'react',
+        ReactDOM: 'react-dom',
+        PropTypes: 'prop-types',
+        ReactRouterDOM: 'react-router-dom',
+        Mobx: 'mobx',
+        MobxReact: 'mobx-react',
     },
     // loader
     module: require('./loader.base'),

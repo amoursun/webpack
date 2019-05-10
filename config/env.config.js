@@ -14,7 +14,7 @@ let service_ip;
 if (env.toLowerCase().indexOf('dev') > -1) {
     service_ip = 'localhost';
 } else if (env.toLowerCase().indexOf('pro') > -1) {
-    service_ip = 'yourIP.cn';
+    service_ip = 'localhost';
 }
 
 const config = {

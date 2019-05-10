@@ -1,8 +1,24 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import App from './home';
+import { AppContainer } from 'react-hot-loader'
 
-ReactDOM.render(
-    <App />,
-    document.getElementById('root')
-)
+// 应用文件
+import App from './App'
+
+const render = (App) => {
+    ReactDOM.render(
+        <AppContainer>
+            <App />
+        </AppContainer>,
+        document.getElementById('root')
+    )
+}
+
+render(App)
+
+// 热更新
+if (module.hot) {
+    module.hot.accept('./App', () => {
+        require('./App').default
+    })
+}
