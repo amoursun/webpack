@@ -31,7 +31,7 @@ module.exports = merge(baseWebpackConfig, {
         minimizer: [new UglifyJSPlugin()],
         runtimeChunk: {
             name: 'manifest'
-        },
+        },// TODO 会抽取项目公共资源??
         splitChunks: {
             minSize: 30000,
             minChunks: 1,

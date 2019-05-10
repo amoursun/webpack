@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { hot } from 'react-hot-loader';
 
 class App extends Component {
-    state = {  }
+    state = {  };
     render() {
         return (
-            <h1>Hello World!啦啦啦啦了lierniu</h1>
+            <h1>Hello World!cjvdg哈lhhh哈哈jvjhvkdfgsdgsdkd发斯蒂芬斯蒂芬ierdkufhuskd</h1>
         );
     }
 }
-export default hot(module)(App);
+export default App;
+
