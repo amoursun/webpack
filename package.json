@@ -4,9 +4,9 @@
   "description": "Webpack configuration to learn",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf dist/dll/*",
+    "clean": "rimraf dest/dll/*",
     "build:dll": "npm run clean && webpack --config config/webpack.config.dll.js",
-    "build:webpack": "rimraf dist/* && cross-env NODE_ENV=prod webpack --config config/index.js",
+    "build:webpack": "rimraf dest/* && cross-env NODE_ENV=prod webpack --config config/index.js",
     "build": "npm run clean && npm run build:dll && npm run build:webpack",
     "dev": "cross-env HOST=true NODE_ENV=dev webpack-dev-server --config config/index.js --hot --inline --progress --colors --mode development",
     "start": "npm run dev",

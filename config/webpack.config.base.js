@@ -10,7 +10,7 @@ const env = require('./env.config');
 const cdnUrl = ''; // 静态资源上传地址
 const rootDir = path.resolve(__dirname);
 const srcDir = path.join(rootDir, '../src');
-const distDir = path.join(rootDir, '../dest');
+const destDir = path.join(rootDir, '../dest');
 
 const pathJoin = (dir) => path.join(__dirname, '..', dir);
 const pathResolve = (dir) => path.resolve(__dirname, dir);
@@ -26,7 +26,7 @@ module.exports = {
     output: {
         filename: env.DEV ? '[name].js' : '[name]-[chunkhash:8].js',
         publicPath: env.DEV ? env.CLIENT : `${cdnUrl}/`,
-        path: distDir,
+        path: destDir,
         chunkFilename: '[name].[chunkhash:8].js',
     },
     // 解析
