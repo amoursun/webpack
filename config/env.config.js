@@ -32,13 +32,13 @@ const config = {
     HOT: getEnv('HOT', dev),
     INLINE: getEnv('INLINE', dev),
     PATH: {},
-    ROOT: npath.normalize(__dirname + '../')
+    ROOT: npath.join(__dirname, '..')
 };
 
 config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 
 config.PATH.root = config.ROOT;
-config.PATH.src = config.ROOT + '/src/';
+config.PATH.src = config.ROOT + '/src';
 
 outputConf(config);
 

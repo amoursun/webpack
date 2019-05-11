@@ -8,3 +8,46 @@
     "react-hot-loader/babel"
   ]
 }
+
+// 2
+{
+  "env": {
+    "dev": {
+      "presets": [
+        "es2015",
+        "stage-0",
+        "react"
+      ],
+      "plugins": [
+        "react-hot-loader/babel",
+        "transform-decorators-legacy",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        [
+          "transform-runtime",
+          {
+            "polyfill": false
+          }
+        ]
+      ]
+    },
+    "prod": {
+      "presets": [
+        "es2015",
+        "stage-0",
+        "react"
+      ],
+      "plugins": [
+        "transform-decorators-legacy",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        [
+          "transform-runtime",
+          {
+            "polyfill": false
+          }
+        ]
+      ]
+    }
+  }
+}

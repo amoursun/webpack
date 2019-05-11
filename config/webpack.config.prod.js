@@ -14,37 +14,15 @@ module.exports = merge(baseWebpackConfig, {
     devtool: '#source-map',
     // 输出
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, '../dest'),
         filename: 'js/[name].[chunkhash].js',
     },
     // 插件
     plugins: [
-        // new CleanWebpackPlugin(['dist'], {
+        // new CleanWebpackPlugin(['dest'], {
         //     root: path.resolve(__dirname, '../') // webpack打包报错：clean-webpack-plugin only accepts an options object
         // }),
         new CleanWebpackPlugin(),
         new webpack.HashedModuleIdsPlugin()
     ],
-    // 代码分离相关
-    optimization: {
-        nodeEnv: 'production',
-        minimizer: [new UglifyJSPlugin()],
-        runtimeChunk: {
-            name: 'manifest'
-        },// TODO 会抽取项目公共资源??
-        splitChunks: {
-            minSize: 30000,
-            minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
-            name: false,
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendor',
-                    chunks: 'initial',
-                }
-            }
-        }
-    }
 });

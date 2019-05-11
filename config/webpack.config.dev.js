@@ -38,9 +38,9 @@ const webpackConfig = merge(baseWebpackConfig, {
                 target: 'https://m.mock.com/api', // 接口地址域名
                 secure: false, // https接口参数为true, http接口参数为false
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置为true
-                pathRewrite: { // pathRewrite来重写地址
-                    '/api': '/'
-                }
+                // pathRewrite: { // pathRewrite来重写地址
+                //     '/api': '/'
+                // }
             }
         }
     },
@@ -53,5 +53,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         nodeEnv: 'development',
     }
 });
+
+console.log(webpackConfig)
 
 module.exports = webpackConfig;

@@ -1,6 +1,6 @@
 var path = require('path')
 var config = require('./env.config')
-module.export =  {
+module.exports =  {
     rules: [
         {
             test: /\.jsx?$/,
@@ -8,7 +8,8 @@ module.export =  {
             include: [config.PATH.src],
             loader: 'babel-loader',
             options: {
-                presets: ['env', 'stage-0', 'es2015', 'react']
+                presets: ['es2015', 'stage-0', 'react'],
+                cacheDirectory: true
             },
         },
         {

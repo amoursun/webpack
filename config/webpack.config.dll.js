@@ -5,23 +5,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const rootDir = path.resolve(__dirname);
-const staticDir = path.resolve(rootDir, '../dist');
+const staticDir = path.resolve(rootDir, '../dest');
+
+const names = require('./name.config');
+
+console.log('dependencies', names.dependencies);
 
 module.exports = {
     mode: 'production',
     entry: {
-        vendor: [
-            'react',
-            'react-dom',
-            'prop-types',
-            'classnames',
-            'react-router',
-            'lodash',
-            'mobx',
-            'mobx-react',
-            'moment',
-            'core-js'
-        ],
+        vendor: names.dependencies.concat([/*添加其他依赖*/]),
     },
     output: {
         path: path.resolve(staticDir, 'dll'),
@@ -41,7 +34,9 @@ module.exports = {
     module: require('./loader.base'),
     plugins: [
         new webpack.DllPlugin({
+            // manifest.json文件的输出位置
             path: path.resolve(staticDir, 'dll', 'manifest.dll.json'),
+            // 定义打包的公共vendor文件对外暴露的函数名
             name: 'dll_[name]_[chunkhash]',
             context: rootDir,
         }),
@@ -51,3 +46,4 @@ module.exports = {
         }),
     ],
 };
+

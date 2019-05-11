@@ -1,10 +1,13 @@
 import React from 'react'
 import Routes from './routes/index';
 
-import {Provider} from 'mobx-react';
 import stores from './stores/index';
+// import {Provider} from 'mobx-react';
 // import { BrowserRouter } from 'react-router-dom';
 import './style.min.less';
+
+const { Provider } = MobxReact;
+const { BrowserRouter: Router } = ReactRouterDOM;
 
 class App extends React.Component {
     constructor(props) {
