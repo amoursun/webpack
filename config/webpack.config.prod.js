@@ -7,6 +7,8 @@ const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // 引入清除文件插件
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+const env = require('./env.config');
+
 module.exports = merge(baseWebpackConfig, {
     // 模式
     mode: 'production',
@@ -14,7 +16,7 @@ module.exports = merge(baseWebpackConfig, {
     devtool: '#source-map',
     // 输出
     output: {
-        path: path.resolve(__dirname, '../dest'),
+        path: env.PATH.prod,
         filename: 'js/[name].[chunkhash].js',
     },
     // 插件

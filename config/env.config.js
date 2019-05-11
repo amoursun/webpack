@@ -9,6 +9,7 @@ const port = parseInt(getEnv('PORT', 8088));
 
 var npath = require('path');
 var _ = require('lodash');
+var utils = require('./utils');
 
 let service_ip;
 if (env.toLowerCase().indexOf('dev') > -1) {
@@ -37,8 +38,17 @@ const config = {
 
 config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 
+// 源代码类路径
 config.PATH.root = config.ROOT;
-config.PATH.src = config.ROOT + '/src';
+config.PATH.src = utils.p(config.ROOT + '/src');
+config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
+
+// 构建输出路径
+config.PATH.dest = utils.p(config.ROOT + '/dest/');
+config.PATH.dll = utils.p(config.PATH.dest + '/dll/');
+config.PATH.dev = utils.p(config.PATH.dest + '/dev/');
+config.PATH.prod = utils.p(config.PATH.dest + '/prod/');
+
 
 outputConf(config);
 

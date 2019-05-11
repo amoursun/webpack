@@ -8,36 +8,34 @@ require('babel-polyfill');
 const env = require('./env.config');
 
 const cdnUrl = ''; // 静态资源上传地址
-const rootDir = path.resolve(__dirname);
-const srcDir = path.join(rootDir, '../src');
-const destDir = path.join(rootDir, '../dest');
 
-const pathJoin = (dir) => path.join(__dirname, '..', dir);
-const pathResolve = (dir) => path.resolve(__dirname, dir);
+// join 链接两个文件 path.join('foo', 'baz', 'bar'); // 返回 'foo/baz/bar'
+// resolve 把一个路径或路径片段的序列解析为一个绝对路径(resolve把‘／’当成根目录)
+const pathJoin = (dirBase = __dirname, dir = '') => path.join(dirBase, dir);
 
 module.exports = {
     // 入口起点
     entry: [
         'babel-polyfill',
         'react-hot-loader/patch',
-        srcDir + '/index.js'
+        env.PATH.src + '/index.js'
     ],
     // 输出
     output: {
         filename: env.DEV ? '[name].js' : '[name]-[chunkhash:8].js',
         publicPath: env.DEV ? env.CLIENT : `${cdnUrl}/`,
-        path: destDir,
+        path: env.PATH.dev,
         chunkFilename: '[name].[chunkhash:8].js',
     },
     // 解析
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: { // import xxx from 'components/xxx'
-            '@': pathJoin('src'),
-            components: path.join(srcDir, 'components'),
-            layouts: path.join(srcDir, 'layouts'),
-            module: path.join(srcDir, 'module'),
-            utils: path.join(srcDir, 'utils')
+            '@': pathJoin(env.PATH.root, 'src'),
+            components: path.join(env.PATH.src, 'components'),
+            layouts: path.join(env.PATH.src, 'layouts'),
+            module: path.join(env.PATH.src, 'module'),
+            utils: path.join(env.PATH.src, 'utils')
         },
     },
     externals: {
@@ -124,7 +122,7 @@ module.exports = {
             }, {}),
         ),
         new webpack.DllReferencePlugin({
-            context: rootDir,
+            context: env.PATH.root,
             manifest: require('../dest/dll/manifest.dll.json'),
         }),
     ]
