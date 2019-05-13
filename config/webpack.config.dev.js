@@ -26,8 +26,10 @@ const webpackConfig = merge(baseWebpackConfig, {
         overlay: true, // 如果代码出错，会在浏览器页面弹出“浮动层”
         host: env.HOST,
         port: env.PORT,
+        open: true, // 自动打开页面
         hot: env.HOT,
         inline: env.INLINE,
+        historyApiFallback: true, // 热更新之后, 不会报(React-router v4 -) cannot GET *url*
         https: true,
         before(app) {
             webpackApiMocker(app, mocker);

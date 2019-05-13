@@ -21,7 +21,6 @@
   "env": {
     "dev": {
       "plugins": [
-        "react-hot-loader/babel",
         "transform-decorators-legacy",
         "transform-object-rest-spread",
         "transform-class-properties",
@@ -30,7 +29,8 @@
           {
             "polyfill": false
           }
-        ]
+        ],
+        "react-hot-loader/babel"
       ]
     },
     "prod": {

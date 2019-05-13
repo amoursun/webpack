@@ -1,21 +1,17 @@
 import React from 'react'
-import Routes from './routes/index';
-
-import stores from './stores/index';
-// import {Provider} from 'mobx-react';
-// import { BrowserRouter } from 'react-router-dom';
+import Routes from 'routes';
+import stores from 'stores';
 import './style.min.less';
 
-const { Provider } = MobxReact;
-const { BrowserRouter: Router } = ReactRouterDOM;
+const {Provider} = MobxReact;
+const {BrowserRouter: Router} = ReactRouterDOM;
+// import {BrowserRouter as Router, withRouter} from "react-router-dom";
+
 
 class App extends React.Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
-            <div className="app">
+            <div className="app-module">
                 <Provider {...stores}>
                     <Router basename={__BASENAME__}>{Routes()}</Router>
                 </Provider>
@@ -23,4 +19,5 @@ class App extends React.Component {
         )
     }
 }
+
 export default App;
