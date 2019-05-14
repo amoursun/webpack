@@ -17,7 +17,8 @@ module.exports = {
     // 入口起点
     entry: [
         'babel-polyfill',
-        'react-hot-loader/patch',
+        'react-hot-loader/patch', // 用于启动hmr
+        'webpack-hot-middleware/client',
         env.PATH.src + '/index.js'
     ],
     // 输出
@@ -37,7 +38,8 @@ module.exports = {
             module: path.join(env.PATH.src, '/module/'),
             routes: path.join(env.PATH.src, '/routes/'),
             stores: path.join(env.PATH.src, '/stores/'),
-            utils: path.join(env.PATH.src, '/utils/')
+            utils: path.join(env.PATH.srcNodeModules, '/utils/'),
+            common: path.join(env.PATH.srcNodeModules, '/common/')
         },
     },
     externals: {
@@ -48,8 +50,10 @@ module.exports = {
         Mobx: 'mobx',
         MobxReact: 'mobx-react',
     },
-    // 代码分离相关
+    // 代码分离相关(webpack4新增)
     optimization: {
+        noEmitOnErrors: true, // 替换 new webpack.NoEmitOnErrorsPlugin()
+        concatenateModules: true, // 替换 new webpack.optimize.ModuleConcatenationPlugin(),// 预编译
         nodeEnv: 'production',
         runtimeChunk: {
             name: 'manifest'
@@ -106,7 +110,7 @@ module.exports = {
             template: 'index.html',
             inject: 'body'
         }),
-        new webpack.ProvidePlugin({
+        new webpack.ProvidePlugin({ // 自动加载模块，而不必到处 import 或 require
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
@@ -116,6 +120,7 @@ module.exports = {
             Immutable: 'immutable',
             MobxReact: 'mobx-react',
             ReactRouterDOM: 'react-router-dom',
+            Promise: 'bluebird', // 全功能的Promise库
         }),
         new webpack.DefinePlugin(
             Object.keys(env).reduce((res, k) => {

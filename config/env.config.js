@@ -3,7 +3,7 @@
  */
 const env = getEnv('NODE_ENV', 'dev');
 const dev = /dev/i.test(env);
-const https = getEnv('HTTPS', true);
+const https = getEnv('HTTPS', false);
 const host = process.env.HOST ? getIpAddress() : 'localhost';
 const port = parseInt(getEnv('PORT', 8088));
 
@@ -42,6 +42,7 @@ config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 config.PATH.root = config.ROOT;
 config.PATH.src = utils.p(config.ROOT + '/src');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
+config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
 
 // 构建输出路径
 config.PATH.dest = utils.p(config.ROOT + '/dest/');
