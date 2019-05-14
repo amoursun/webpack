@@ -1,26 +1,45 @@
 const path = require('path');
 const webpack = require('webpack');
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+
+const devConfig = require('../config/webpack.config.dev');
+const env = require('../config/env.config');
+
 // 服务器框架
 const express = require('express');
-const config = require('../config/webpack.config.dev');
-
-
-const compiler = webpack(config);
 const app = express();
 
-// 热更新
-app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: true,
-    hot: true,
-    inline: true,
-}));
+
+const compiler = webpack(devConfig);
+
+// 热更新  配置devServer
+app.use(
+    webpackDevMiddleware(compiler, { // webpack-dev-middleware 用于设置hot为true
+        hot: env.HOT,
+        inline: env.INLINE,
+        color: true,
+        historyApiFallback: true,
+        open: true,
+        overlay: true, // 如果代码出错，会在浏览器页面弹出“浮动层”
+        stats: "errors-only" // 为了减少webpack不必要的输出，将stats设为errors-only
+    })
+);
+
+// 加入热更新中间件
+app.use(webpackHotMiddleware(compiler, {})); // 添加webpack-hot-middleware 用于开启hmr
+app.get('*', (request, response) => {
+    response.sendFile(path.resolve(env.PATH.prod, 'index.html'));
+});
 
 
 // 启动服务
-app.listen('8088', '0.0.0.0', (err) => {
+app.listen(env.PORT, env.HOST, (err) => {
     if (err) {
         console.error(err);
         return;
     }
-    console.log(' start server at port ' +'8088');
+    console.log(' start server at port ' + env.PORT);
 });
+
+
