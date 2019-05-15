@@ -2,7 +2,7 @@ var path = require('path')
 var config = require('./env.config')
 var babelConfig = require('./babelConfig')
 
-module.exports = {
+var babelBase = {
     rules: [
         {
             test: /\.jsx?$/,
@@ -68,3 +68,6 @@ module.exports = {
         }
     ]
 };
+
+// console.log(babelBase.rules[0].options);
+module.exports = babelBase;

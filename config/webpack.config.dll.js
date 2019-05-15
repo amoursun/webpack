@@ -1,49 +1,33 @@
-const path = require('path');
-const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var del = require('del')
+var env = require('./env.config')
+var dllDevWebpackConfig = require('./dll.webpack.config.dev')
 
-const rootDir = path.resolve(__dirname);
-const staticDir = path.resolve(rootDir, '../dest');
+del.sync(env.PATH.dllProd, {force: true})
+del.sync(env.PATH.dllDev, {force: true})
 
-const names = require('./name.config');
+var webpack = require('webpack')
+var compilerDev = webpack(dllDevWebpackConfig)
 
-console.log('dependencies', names.dependencies);
+compilerDev.run(function (err) {
+  if (err) {
+    console.error(err)
+    return
+  }
 
-module.exports = {
-    mode: 'production',
-    entry: {
-        vendor: names.dependencies.concat([/*添加其他依赖*/]),
-    },
-    output: {
-        path: path.resolve(staticDir, 'dll'),
-        filename: 'dll.[name].[chunkhash].js',
-        library: 'dll_[name]_[chunkhash]',
-    },
-    optimization: {
-        minimizer: [
-            new UglifyJsPlugin({
-                cache: true,
-                parallel: true,
-                sourceMap: true,
-            }),
-            new OptimizeCSSAssetsPlugin({}),
-        ],
-    },
-    module: require('./loader.base'),
-    plugins: [
-        new webpack.DllPlugin({
-            // manifest.json文件的输出位置
-            path: path.resolve(staticDir, 'dll', 'manifest.dll.json'),
-            // 定义打包的公共vendor文件对外暴露的函数名
-            name: 'dll_[name]_[chunkhash]',
-            context: rootDir,
-        }),
-        new MiniCssExtractPlugin({
-            filename: 'dll.[name].[chunkhash].css',
-            allChunks: true,
-        }),
-    ],
-};
+  console.log('[SUCCESS] dll for Development bundle 编译完成, 请笑纳...')
+})
 
+var dllProdWebpackConfig = require('./dll.webpack.config.prod')
+
+var webpack = require('webpack')
+
+var compilerProd = webpack(dllProdWebpackConfig)
+
+compilerProd.run(function (err) {
+  if (err) {
+    console.error(err)
+    return
+  }
+
+  console.log('[SUCCESS] dll for Production bundle 编译完成, 请笑纳...')
+})

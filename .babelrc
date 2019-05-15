@@ -1,4 +1,6 @@
 {
+  "env": {
+  },
   "presets": [
     [
       "env",
@@ -18,33 +20,20 @@
     "stage-0",
     "react"
   ],
-  "env": {
-    "dev": {
-      "plugins": [
-        "transform-decorators-legacy",
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        [
-          "transform-runtime",
-          {
-            "polyfill": false
-          }
-        ],
-        "react-hot-loader/babel"
-      ]
-    },
-    "prod": {
-      "plugins": [
-        "transform-decorators-legacy",
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        [
-          "transform-runtime",
-          {
-            "polyfill": false
-          }
-        ]
-      ]
-    }
-  }
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-object-rest-spread",
+    "transform-class-properties",
+    [
+      "transform-runtime",
+      {
+        "polyfill": false,
+        "regenerator": true
+      }
+    ]
+  ],
+  "ignore": [
+    "*.test.js",
+    "**/__test__"
+  ]
 }
