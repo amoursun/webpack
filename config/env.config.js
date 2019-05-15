@@ -40,8 +40,8 @@ config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 
 // 源代码类路径
 config.PATH.root = config.ROOT;
-config.PATH.src = utils.p(config.ROOT + '/src');
-config.PATH.config = utils.p(config.ROOT + '/config');
+config.PATH.src = utils.p(config.ROOT + '/src/');
+config.PATH.config = utils.p(config.ROOT + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
 

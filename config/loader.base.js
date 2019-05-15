@@ -2,6 +2,25 @@ var path = require('path')
 var config = require('./env.config')
 var babelConfig = require('./babelConfig')
 
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+
+const postcssLoader = {
+  loader: 'postcss-loader',
+  options: {
+    ident: 'postcss',
+    plugins(/*loader*/) {
+      return [
+        require('autoprefixer')(),
+        require('cssnano')({
+          zindex: false,
+          reduceIdents: false
+        })
+      ]
+    }
+  }
+}
+
 var babelBase = {
   rules: [
     {
@@ -48,36 +67,77 @@ var babelBase = {
     },
     {
       test: /\.css$/,
+      exclude: [
+        /\.mod\.css$/,
+        /\.use(able)?\.css$/
+      ],
+      use: ExtractTextWebpackPlugin.extract({
+        use: [
+          { loader: 'css-loader', options: { minimize: true } },
+          postcssLoader
+        ],
+        fallback: 'style-loader'
+      })
+      // use: [
+      //   {loader: 'style-loader'},
+      //   {
+      //     loader: 'css-loader',
+      //     options: {
+      //       modules: true,
+      //       localIdentName: '[path][name]__[local]--[hash:base64:5]'
+      //     }
+      //   }
+      // ]
+    },
+    {
+      test: /\.use(able)?\.css/,
       use: [
-        {loader: 'style-loader'},
-        {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            localIdentName: '[path][name]__[local]--[hash:base64:5]'
-          }
-        }
+        { loader: 'style-loader/useable' },
+        { loader: 'css-loader'},
+        postcssLoader,
+        { loader: 'less-loader' }
       ]
     },
     {
       test: /\.less$/,
-      use: [
-        {loader: 'style-loader'},
-        {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            localIdentName: '[path][name]__[local]--[hash:base64:5]'
-          }
-        },
-        {
-          loader: 'less-loader',
-          options: {
-            modules: true,
-            localIdentName: '[path][name]__[local]--[hash:base64:5]'
-          }
-        },
+      exclude: [
+        /\.mod\.less/,
+        /\.use(able)?\.less$/
       ],
+      use: ExtractTextWebpackPlugin.extract({
+        use: [
+          { loader: 'css-loader'},
+          postcssLoader,
+          { loader: 'less-loader' }
+        ],
+        fallback: 'style-loader'
+      })
+      // use: [
+      //   {loader: 'style-loader'},
+      //   {
+      //     loader: 'css-loader',
+      //     options: {
+      //       modules: true,
+      //       localIdentName: '[path][name]__[local]--[hash:base64:5]'
+      //     }
+      //   },
+      //   {
+      //     loader: 'less-loader',
+      //     options: {
+      //       modules: true,
+      //       localIdentName: '[path][name]__[local]--[hash:base64:5]'
+      //     }
+      //   }
+      // ]
+    },
+    {
+      test: /\.use(able)?\.less$/,
+      use: [
+        { loader: 'style-loader/useable' },
+        { loader: 'css-loader', options: { minimize: true } },
+        postcssLoader,
+        { loader: 'less-loader' }
+      ]
     },
   ]
 };

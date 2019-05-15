@@ -12,10 +12,9 @@ module.exports = {
         "useBuiltIns": true
       }
     ],
-    require.resolve('babel-preset-react'),
-    'es2015',
-    'stage-0',
-    'react'
+    require.resolve('babel-preset-es2015'),
+    require.resolve('babel-preset-stage-0'),
+    require.resolve('babel-preset-react')
   ],
   plugins: [
     require.resolve('babel-plugin-lodash'),

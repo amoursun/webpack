@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html模板
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 优化或者压缩CSS资源
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+// extract-text-webpack-plugin@next 也可以解决 从webpack v4开始，extract-text-webpack-plugin不应该用于css。请改用mini-css-extract-plugin。
 require('babel-polyfill');
 
 const utils = require('./utils')
@@ -99,6 +101,14 @@ module.exports = {
           minSize: 0,
           priority: 1,
         },
+        // styles: {
+        //   name: 'styles',
+        //   test: /\.css|less$/,
+        //   chunks: 'all',
+        //   minChunks: 1,
+        //   reuseExistingChunk: true,
+        //   enforce: true,
+        // }
       }
     }
   },
@@ -123,6 +133,7 @@ module.exports = {
       MobxReact: 'mobx-react',
       ReactRouterDOM: 'react-router-dom',
       Promise: 'bluebird', // 全功能的Promise库
+      _: 'lodash'
     }),
     new webpack.DefinePlugin(
       Object.keys(env).reduce((res, k) => {
@@ -136,6 +147,10 @@ module.exports = {
         ? require(utils.p(env.PATH.dllDev + '/vendor-manifest.json'))
         : require(utils.p(env.PATH.dllProd + '/vendor-manifest.json'))
 
+    }),
+    new ExtractTextWebpackPlugin({
+      filename: '[name].[contenthash:6].css',
+      disable: env.DEV
     }),
   ]
 };

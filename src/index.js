@@ -5,14 +5,12 @@ import {AppContainer} from 'react-hot-loader'
 // 应用文件
 import App from './App'
 
-const render = (App) => {
-  ReactDOM.render(
-     <AppContainer>
-       <App/>
-     </AppContainer>,
-    document.getElementById('root')
-  )
-};
+const render = App => ReactDOM.render(
+  <AppContainer >
+    <App />
+  </AppContainer >,
+  document.getElementById('root')
+)
 
 render(App);
 
@@ -20,8 +18,6 @@ render(App);
 if (module.hot) {
   module.hot.accept('./App', () => {
     console.log(require('./App').default);
-    // require('./App').default
-    render(App)
-
+    render(require('./App').default)
   })
 }
