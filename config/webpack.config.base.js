@@ -12,12 +12,13 @@ const cdnUrl = ''; // 静态资源上传地址
 // join 链接两个文件 path.join('foo', 'baz', 'bar'); // 返回 'foo/baz/bar'
 // resolve 把一个路径或路径片段的序列解析为一个绝对路径(resolve把‘／’当成根目录)
 const pathJoin = (dirBase = __dirname, dir = '') => path.join(dirBase, dir);
-
+// 'react-hot-loader/patch',  // 用于启动hmr
 module.exports = {
     // 入口起点
     entry: [
         'babel-polyfill',
         'react-hot-loader/patch',
+        'webpack-hot-middleware/client',
         env.PATH.src + '/index.js'
     ],
     // 输出
@@ -37,7 +38,8 @@ module.exports = {
             module: path.join(env.PATH.src, '/module/'),
             routes: path.join(env.PATH.src, '/routes/'),
             stores: path.join(env.PATH.src, '/stores/'),
-            utils: path.join(env.PATH.src, '/utils/')
+            utils: path.join(env.PATH.srcNodeModules, '/utils/'),
+            common: path.join(env.PATH.srcNodeModules, '/common/')
         },
     },
     externals: {
@@ -51,6 +53,8 @@ module.exports = {
     // 代码分离相关
     optimization: {
         nodeEnv: 'production',
+        noEmitOnErrors: true, // 替换 new webpack.NoEmitOnErrorsPlugin()
+        concatenateModules: true, // 替换 new webpack.optimize.ModuleConcatenationPlugin(),// 预编译
         runtimeChunk: {
             name: 'manifest'
         },// TODO 会抽取项目公共资源??
@@ -116,6 +120,7 @@ module.exports = {
             Immutable: 'immutable',
             MobxReact: 'mobx-react',
             ReactRouterDOM: 'react-router-dom',
+            Promise: 'bluebird', // 全功能的Promise库
         }),
         new webpack.DefinePlugin(
             Object.keys(env).reduce((res, k) => {

@@ -1,28 +1,34 @@
 var path = require('path')
 var config = require('./env.config')
+var babelConfig = require('./babelConfig')
+
 module.exports = {
     rules: [
         {
             test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,// 屏蔽不需要处理的文件（文件夹）（可选）
+            exclude: [config.PATH.projectNodeModules],// 屏蔽不需要处理的文件（文件夹）（可选）
             include: [config.PATH.src],
             loader: 'babel-loader',
-            options: {
-                presets: ['es2015', 'stage-0', 'react'],
-                cacheDirectory: true,
-                plugins: [
-                    'transform-decorators-legacy',
-                    'transform-object-rest-spread',
-                    'transform-class-properties',
-                    [
-                        'transform-runtime',
-                        {
-                            "polyfill": false
-                        }
-                    ],
-                    'react-hot-loader/babel'
-                ]
-            },
+            options: Object.assign({
+                cacheDirectory: true
+            }, babelConfig)
+            // options: {
+            //
+            //     presets: ['es2015', 'stage-0', 'react'],
+            //     cacheDirectory: true,
+            //     plugins: [
+            //         'transform-decorators-legacy',
+            //         'transform-object-rest-spread',
+            //         'transform-class-properties',
+            //         [
+            //             'transform-runtime',
+            //             {
+            //                 "polyfill": false
+            //             }
+            //         ],
+            //         'react-hot-loader/babel'
+            //     ]
+            // },
         },
         {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
