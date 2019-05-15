@@ -50,11 +50,11 @@ module.exports = {
         Mobx: 'mobx',
         MobxReact: 'mobx-react',
     },
-    // 代码分离相关(webpack4新增)
+    // 代码分离相关
     optimization: {
+        nodeEnv: 'production',
         noEmitOnErrors: true, // 替换 new webpack.NoEmitOnErrorsPlugin()
         concatenateModules: true, // 替换 new webpack.optimize.ModuleConcatenationPlugin(),// 预编译
-        nodeEnv: 'production',
         runtimeChunk: {
             name: 'manifest'
         },// TODO 会抽取项目公共资源??
@@ -110,7 +110,7 @@ module.exports = {
             template: 'index.html',
             inject: 'body'
         }),
-        new webpack.ProvidePlugin({ // 自动加载模块，而不必到处 import 或 require
+        new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
