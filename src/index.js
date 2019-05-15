@@ -7,20 +7,20 @@ import App from './App'
 
 const render = (App) => {
   ReactDOM.render(
-    <AppContainer>
-      <App/>
-    </AppContainer>,
+     <AppContainer>
+       <App/>
+     </AppContainer>,
     document.getElementById('root')
   )
 };
 
-render(App)
+render(App);
 
 // 热更新
 if (module.hot) {
   module.hot.accept('./App', () => {
-    console.log(require('./App').default)
-    require('./App').default
+    console.log(require('./App').default);
+    // require('./App').default
     render(App)
 
   })

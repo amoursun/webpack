@@ -9,24 +9,22 @@ const utils = require('./utils')
 
 const env = require('./env.config');
 
-const cdnUrl = ''; // 静态资源上传地址
+const onlineStaticUrl = ''; // 静态资源上传地址
 
 // join 链接两个文件 path.join('foo', 'baz', 'bar'); // 返回 'foo/baz/bar'
 // resolve 把一个路径或路径片段的序列解析为一个绝对路径(resolve把‘／’当成根目录)
 const pathJoin = (dirBase = __dirname, dir = '') => path.join(dirBase, dir);
-// 'react-hot-loader/patch',  // 用于启动hmr
+
+let presets = env.DEV ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : [];
+
 module.exports = {
   // 入口起点
-  entry: [
-    'babel-polyfill',
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client',
-    env.PATH.src + '/index.js'
-  ],
+  entry: presets.concat(['babel-polyfill', env.PATH.src + '/index.js']),
   // 输出
   output: {
     filename: env.DEV ? '[name].js' : '[name]-[chunkhash:8].js',
-    publicPath: env.DEV ? env.CLIENT : `${cdnUrl}/`,
+    // publicPath: env.DEV ? env.CLIENT : `${onlineStaticUrl}/`,
+    publicPath: env.DEV ? '/' : '/dest/prod/',
     path: env.PATH.dev,
     chunkFilename: '[name].[chunkhash:8].js',
   },

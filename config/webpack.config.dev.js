@@ -30,7 +30,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     hot: env.HOT,
     inline: env.INLINE,
     historyApiFallback: true, // 热更新之后, 不会报(React-router v4 -) cannot GET *url*
-    https: true,
+    https: env.HTTPS,
     before(app) {
       webpackApiMocker(app, mocker);
     },

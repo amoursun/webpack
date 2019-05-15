@@ -33,7 +33,7 @@ module.exports = {
     new webpack.DllPlugin({
       // manifest.json文件的输出位置
       path: utils.p(env.PATH.dllDev + '/[name]-manifest.json'),
-      // path: path.resolve(staticDir, 'dll', '[name]-manifest.dll.json'),
+      // path: path.resolve(staticDir, 'dll-dev', '[name]-manifest.dll.json'),
       // 定义打包的公共vendor文件对外暴露的函数名
       name: 'dll_[name]_lib',
       context: utils.p(env.PATH.src),

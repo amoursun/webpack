@@ -34,7 +34,7 @@ app.use(
 // 加入热更新中间件
 app.use(webpackHotMiddleware(compiler, {log: defaultLog})); // 添加webpack-hot-middleware 用于开启hmr
 app.get('*', (request, response) => {
-    response.sendFile(path.resolve(env.PATH.prod, 'index.html'));
+    response.sendFile(path.resolve(env.PATH.root, 'index.html'));
 });
 
 

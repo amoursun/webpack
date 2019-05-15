@@ -7,9 +7,9 @@ module.exports = {
           'node': '6',
           'browsers': ['ie>=9']
         },
-        'loose': false,
-        'modules': false,
-        'useBuiltIns': 'usage'
+        "loose": false,
+        "modules": false,
+        "useBuiltIns": true
       }
     ],
     require.resolve('babel-preset-react'),
@@ -30,6 +30,14 @@ module.exports = {
         regenerator: true
       }
     ],
-    require.resolve('react-hot-loader/babel')
+    require.resolve('react-hot-loader/babel'),
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "es",
+        "style": true
+      }
+    ]
   ]
 };
