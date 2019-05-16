@@ -10,8 +10,13 @@ const env = require('../config/env.config');
 const express = require('express');
 const app = express();
 
+const utils = require('../config/utils')
 
 const compiler = webpack(devConfig);
+
+let defaultLog = function (message) {
+  utils.logs(['info: ' + message])
+}
 
 // 热更新  配置devServer
 app.use(
@@ -27,9 +32,9 @@ app.use(
 );
 
 // 加入热更新中间件
-app.use(webpackHotMiddleware(compiler, {})); // 添加webpack-hot-middleware 用于开启hmr
+app.use(webpackHotMiddleware(compiler, {log: defaultLog})); // 添加webpack-hot-middleware 用于开启hmr
 app.get('*', (request, response) => {
-    response.sendFile(path.resolve(env.PATH.prod, 'index.html'));
+    response.sendFile(path.resolve(env.PATH.root, 'index.html'));
 });
 
 

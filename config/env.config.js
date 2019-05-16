@@ -40,13 +40,15 @@ config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 
 // 源代码类路径
 config.PATH.root = config.ROOT;
-config.PATH.src = utils.p(config.ROOT + '/src');
+config.PATH.src = utils.p(config.ROOT + '/src/');
+config.PATH.config = utils.p(config.ROOT + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
 
 // 构建输出路径
 config.PATH.dest = utils.p(config.ROOT + '/dest/');
-config.PATH.dll = utils.p(config.PATH.dest + '/dll/');
+config.PATH.dllDev = utils.p(config.PATH.dest + '/dll-dev/');
+config.PATH.dllProd = utils.p(config.PATH.dest + '/dll-prod/');
 config.PATH.dev = utils.p(config.PATH.dest + '/dev/');
 config.PATH.prod = utils.p(config.PATH.dest + '/prod/');
 

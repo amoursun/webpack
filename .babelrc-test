@@ -1,25 +1,26 @@
 {
   "presets": [
-    "@babel/preset-react",
-    "@babel/preset-env"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "6",
+          "browsers": [
+            "last 2 versions"
+          ]
+        },
+        "loose": false,
+        "modules": false,
+        "useBuiltIns": true
+      }
+    ],
+    "es2015",
+    "stage-0",
+    "react"
   ],
-  "plugins": [
-    "@babel/plugin-proposal-class-properties",
-    "react-hot-loader/babel"
-  ]
-}
-
-// 2
-{
   "env": {
     "dev": {
-      "presets": [
-        "es2015",
-        "stage-0",
-        "react"
-      ],
       "plugins": [
-        "react-hot-loader/babel",
         "transform-decorators-legacy",
         "transform-object-rest-spread",
         "transform-class-properties",
@@ -28,15 +29,11 @@
           {
             "polyfill": false
           }
-        ]
+        ],
+        "react-hot-loader/babel"
       ]
     },
     "prod": {
-      "presets": [
-        "es2015",
-        "stage-0",
-        "react"
-      ],
       "plugins": [
         "transform-decorators-legacy",
         "transform-object-rest-spread",
