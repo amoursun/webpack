@@ -4,13 +4,11 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const rootDir = path.resolve(__dirname);
-
 const utils = require('./utils')
 const names = require('./name.config');
 const env = require('./env.config');
 
-module.exports = {
+const dllProdConfig = {
   mode: 'production',
   context: utils.p(env.PATH.src),
   entry: {
@@ -45,7 +43,7 @@ module.exports = {
   module: require('./loader.base'),
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"',
+      'process.env.NODE_ENV': 'production',
       '__PRODUCTION__': true,
       '__DEVELOPMENT__': false,
       '__DEVTOOLS__': false
@@ -64,4 +62,6 @@ module.exports = {
     }),
   ],
 };
+
+module.exports = dllProdConfig;
 

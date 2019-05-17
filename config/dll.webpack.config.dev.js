@@ -1,16 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const rootDir = path.resolve(__dirname);
+// const rootDir = __dirname; // 不需要 path.resolve, __dirname本身就是 resolve 之后的
 
 const utils = require('./utils')
 const names = require('./name.config');
 const env = require('./env.config');
 
-module.exports = {
+const dllDevConfig = {
   mode: 'development',
   context: utils.p(env.PATH.src),
   entry: {
@@ -25,7 +23,7 @@ module.exports = {
   module: require('./loader.base'),
   plugins: [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"development"',
+      'process.env.NODE_ENV': 'development',
       '__PRODUCTION__': false,
       '__DEVELOPMENT__': true,
       '__DEVTOOLS__': true
@@ -44,4 +42,6 @@ module.exports = {
     }),
   ],
 };
+
+module.exports = dllDevConfig;
 
