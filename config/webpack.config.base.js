@@ -35,13 +35,13 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: { // import xxx from 'components/xxx'
       '@': pathJoin(env.PATH.root, 'src'),
-      components: utils.p(env.PATH.src, '/components/'),
-      layouts: utils.p(env.PATH.src, '/layouts/'),
-      module: utils.p(env.PATH.src, '/module/'),
-      routes: utils.p(env.PATH.src, '/routes/'),
-      stores: utils.p(env.PATH.src, '/stores/'),
-      utils: utils.p(env.PATH.srcNodeModules, '/utils/'),
-      common: utils.p(env.PATH.srcNodeModules, '/common/')
+      components: utils.p(env.PATH.src + '/components/'),
+      layouts: utils.p(env.PATH.src + '/layouts/'),
+      module: utils.p(env.PATH.src + '/module/'),
+      routes: utils.p(env.PATH.src + '/routes/'),
+      stores: utils.p(env.PATH.src + '/stores/'),
+      utils: utils.p(env.PATH.srcNodeModules + '/utils/'),
+      common: utils.p(env.PATH.srcNodeModules + '/common/')
     },
   },
   externals: {

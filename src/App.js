@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Routes from 'routes';
 import stores from 'stores';
 import './style.min.less';
@@ -8,7 +8,7 @@ const {BrowserRouter: Router} = ReactRouterDOM;
 // import {BrowserRouter as Router, withRouter} from "react-router-dom";
 
 
-class App extends React.Component {
+class App extends Component {
     render() {
         return (
             <div className="app-module">
