@@ -10,6 +10,12 @@ var utils = {
   p: function (path) {
     return npath.resolve(path)
   },
+  j: function (path = __dirname, filePath = '') {
+    return npath.join(path, filePath)
+  },
+  r: function (path = __dirname, filePath = '') {
+    return npath.resolve(path, filePath)
+  },
 
   punix: function (path) {
     return utils.p(path).replace('\/', '/')

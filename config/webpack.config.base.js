@@ -37,7 +37,7 @@ module.exports = {
       '@': pathJoin(env.PATH.root, 'src'),
       components: utils.p(env.PATH.src + '/components/'),
       layouts: utils.p(env.PATH.src + '/layouts/'),
-      module: utils.p(env.PATH.src + '/module/'),
+      module: utils.r(env.PATH.src,'module'),
       routes: utils.p(env.PATH.src + '/routes/'),
       stores: utils.p(env.PATH.src + '/stores/'),
       utils: utils.p(env.PATH.srcNodeModules + '/utils/'),
