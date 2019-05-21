@@ -1,6 +1,6 @@
-var path = require('path')
-var config = require('./env.config')
-var babelConfig = require('./babelConfig')
+const path = require('path')
+const config = require('../basic-config/env.config')
+const babelConfig = require('./babelConfig')
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
@@ -21,8 +21,8 @@ const postcssLoader = {
   }
 }
 
-var babelBase = {
-  rules: [
+const babelBase = isDev => {
+  let rules = [
     {
       test: /\.jsx?$/,
       exclude: [config.PATH.projectNodeModules],// 屏蔽不需要处理的文件（文件夹）（可选）
@@ -73,7 +73,7 @@ var babelBase = {
       ],
       use: ExtractTextWebpackPlugin.extract({
         use: [
-          { loader: 'css-loader', options: { minimize: true } },
+          {loader: 'css-loader', options: {minimize: isDev}},
           postcssLoader
         ],
         fallback: 'style-loader'
@@ -92,10 +92,10 @@ var babelBase = {
     {
       test: /\.use(able)?\.css/,
       use: [
-        { loader: 'style-loader/useable' },
-        { loader: 'css-loader'},
+        {loader: 'style-loader/useable'},
+        {loader: 'css-loader', options: {minimize: isDev}},
         postcssLoader,
-        { loader: 'less-loader' }
+        {loader: 'less-loader'}
       ]
     },
     {
@@ -106,9 +106,9 @@ var babelBase = {
       ],
       use: ExtractTextWebpackPlugin.extract({
         use: [
-          { loader: 'css-loader'},
+          {loader: 'css-loader', options: {minimize: isDev}},
           postcssLoader,
-          { loader: 'less-loader' }
+          {loader: 'less-loader'}
         ],
         fallback: 'style-loader'
       })
@@ -133,14 +133,16 @@ var babelBase = {
     {
       test: /\.use(able)?\.less$/,
       use: [
-        { loader: 'style-loader/useable' },
-        { loader: 'css-loader', options: { minimize: true } },
+        {loader: 'style-loader/useable'},
+        {loader: 'css-loader', options: {minimize: isDev}},
         postcssLoader,
-        { loader: 'less-loader' }
+        {loader: 'less-loader'}
       ]
     },
-  ]
+  ];
+
+  return rules;
 };
 
 // console.log(babelBase.rules[0].options);
-module.exports = babelBase;
+module.exports = isDev => babelBase(isDev);

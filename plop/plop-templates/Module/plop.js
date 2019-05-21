@@ -54,8 +54,8 @@ module.exports = function (plop, data, utils) {
         {
           type: 'add',
           data,
-          path: compPath + '/style.min.less',
-          template: utils.template(__dirname, 'style.min.less')
+          path: compPath + '/style.use.less',
+          template: utils.template(__dirname, 'style.use.less')
         },
         {
           type: 'add',

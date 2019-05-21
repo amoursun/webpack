@@ -1,11 +1,11 @@
 var del = require('del')
-var env = require('./env.config')
+var env = require('../basic-config/env.config')
 var webpack = require('webpack')
 
 del.sync(env.PATH.dllProd, {force: true})
 del.sync(env.PATH.dllDev, {force: true})
 
-var dllDevWebpackConfig = require('./dll.webpack.config.dev')
+var dllDevWebpackConfig = require('../dll-config/dll.webpack.config.dev')
 var compilerDev = webpack(dllDevWebpackConfig)
 compilerDev.run(function (err) {
   if (err) {
@@ -16,7 +16,7 @@ compilerDev.run(function (err) {
   console.log('[SUCCESS] dll for Development bundle 编译完成, 请笑纳...')
 })
 
-var dllProdWebpackConfig = require('./dll.webpack.config.prod');
+var dllProdWebpackConfig = require('../dll-config/dll.webpack.config.prod');
 var compilerProd = webpack(dllProdWebpackConfig);
 compilerProd.run(function (err) {
   if (err) {

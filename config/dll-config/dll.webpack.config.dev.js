@@ -4,9 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // const rootDir = __dirname; // 不需要 path.resolve, __dirname本身就是 resolve 之后的
 
-const utils = require('./utils')
-const names = require('./name.config');
-const env = require('./env.config');
+const utils = require('../basic-config/utils')
+const names = require('../webpack-config/name.config');
+const env = require('../basic-config/env.config');
 
 const dllDevConfig = {
   mode: 'development',
@@ -20,7 +20,9 @@ const dllDevConfig = {
     library: 'dll_[name]_lib',
   },
   // optimization: {}, // dllDev 不需要压缩
-  module: require('./loader.base'),
+  module: {
+    rules: require(utils.p(env.PATH.webpackConfig + '/loader.base'))(env.DEV)
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': 'development',

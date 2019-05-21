@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import {toJS} from 'mobx';
 import {inject, observer} from 'mobx-react';
 
+import pageStyle from './style.use.less'
+
 // import State from './State' // mobx State 放同级
 // @observer
 // class Home extends Component {
@@ -77,6 +79,14 @@ class Home extends Component {
     constructor(props) {
         super(props);
         console.log(props)
+    }
+
+    componentWillMount() {
+      pageStyle.use()
+    }
+
+    componentWillUnmount(){
+      pageStyle.unuse()
     }
 
     render() {

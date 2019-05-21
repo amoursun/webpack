@@ -9,7 +9,7 @@ import {Component} from 'react'
 import {observer, inject} from 'mobx-react'
 import {h, c} from 'utils/base'
 
-import compStyle from './style.min.less'
+import compStyle from './style.use.less'
 import State from './State'
 
 @observer

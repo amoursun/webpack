@@ -12,7 +12,7 @@
     "path": "./api3/index.json"
   },
   "api4":{
-    "url": "/api4",
-    "path": "./api4/index.json"
+    "url": "/area",
+    "path": "./area/index.json"
   }
 }

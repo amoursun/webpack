@@ -1,14 +1,14 @@
 'use strict'
 const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.config.base');
+const baseWebpackConfig = require('../webpack-config/webpack.config.base');
 
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // 引入清除文件插件
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-const env = require('./env.config');
-const utils = require('./utils');
+const env = require('../basic-config/env.config');
+const utils = require('../basic-config/utils');
 
 module.exports = merge(baseWebpackConfig, {
   // 模式

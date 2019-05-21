@@ -4,9 +4,9 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const utils = require('./utils')
-const names = require('./name.config');
-const env = require('./env.config');
+const utils = require('../basic-config/utils')
+const names = require('../webpack-config/name.config');
+const env = require('../basic-config/env.config');
 
 const dllProdConfig = {
   mode: 'production',
@@ -40,7 +40,9 @@ const dllProdConfig = {
       new OptimizeCSSAssetsPlugin({}),
     ],
   },
-  module: require('./loader.base'),
+  module:  {
+    rules: require(utils.p(env.PATH.webpackConfig + '/loader.base'))(env.DEV)
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': 'production',

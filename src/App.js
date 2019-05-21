@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Routes from 'routes';
 import stores from 'stores';
-import './style.min.less';
+import './style.use.less';
 
 const {Provider} = MobxReact;
 const {BrowserRouter: Router} = ReactRouterDOM;

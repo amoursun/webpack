@@ -19,7 +19,7 @@ if (env.toLowerCase().indexOf('dev') > -1) {
 }
 
 const config = {
-    VERSION: require('../package').version,
+    VERSION: require('../../package').version,
     PROTOCOL: https ? 'https' : 'http',
     HTTPS: https,
     HOST: host,
@@ -33,17 +33,25 @@ const config = {
     HOT: getEnv('HOT', dev),
     INLINE: getEnv('INLINE', dev),
     PATH: {},
-    ROOT: npath.join(__dirname, '..')
+    ROOT: npath.join(__dirname, '../..')
 };
 
 config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 
 // 源代码类路径
 config.PATH.root = config.ROOT;
+config.PATH.static = utils.p(config.ROOT + '/static/');
 config.PATH.src = utils.p(config.ROOT + '/src/');
 config.PATH.config = utils.p(config.ROOT + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
+
+// 构建编译webpackConfig路径
+config.PATH.basicConfig = utils.p(config.PATH.config + '/basic-config/');
+config.PATH.buildConfig = utils.p(config.PATH.config + '/build-config/');
+config.PATH.dllConfig = utils.p(config.PATH.config + '/dll-config/');
+config.PATH.templates = utils.p(config.PATH.config + '/templates/');
+config.PATH.webpackConfig = utils.p(config.PATH.config + '/webpack-config/');
 
 // 构建输出路径
 config.PATH.dest = utils.p(config.ROOT + '/dest/');

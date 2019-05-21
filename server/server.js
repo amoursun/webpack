@@ -3,14 +3,14 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-const devConfig = require('../config/webpack.config.dev');
-const env = require('../config/env.config');
+const devConfig = require('../config/build-config/webpack.config.dev');
+const env = require('../config/basic-config/env.config');
 
 // 服务器框架
 const express = require('express');
 const app = express();
 
-const utils = require('../config/utils')
+const utils = require('../config/basic-config/utils')
 
 const compiler = webpack(devConfig);
 
@@ -34,7 +34,7 @@ app.use(
 // 加入热更新中间件
 app.use(webpackHotMiddleware(compiler, {log: defaultLog})); // 添加webpack-hot-middleware 用于开启hmr
 app.get('*', (request, response) => {
-    response.sendFile(path.resolve(env.PATH.root, 'index.html'));
+    response.sendFile(path.resolve(env.PATH.static, 'index.html'));
 });
 
 

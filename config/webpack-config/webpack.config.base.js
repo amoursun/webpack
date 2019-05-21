@@ -4,12 +4,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html模板
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 优化或者压缩CSS资源
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 打包依赖图
 // extract-text-webpack-plugin@next 也可以解决 从webpack v4开始，extract-text-webpack-plugin不应该用于css。请改用mini-css-extract-plugin。
 require('babel-polyfill');
 
-const utils = require('./utils')
+const utils = require('../basic-config/utils')
 
-const env = require('./env.config');
+const env = require('../basic-config/env.config');
 
 const onlineStaticUrl = ''; // 静态资源上传地址
 
@@ -44,7 +45,7 @@ module.exports = {
       common: utils.p(env.PATH.srcNodeModules + '/common/')
     },
   },
-  externals: {
+  externals: { // const {...} = React === import {...} from 'react'
     React: 'react',
     ReactDOM: 'react-dom',
     PropTypes: 'prop-types',
@@ -113,14 +114,16 @@ module.exports = {
     }
   },
   // loader
-  module: require('./loader.base'),
+  module: {
+    rules: require('./loader.base')(env.DEV)
+  },
   // 目标运行环境
   // target: "web",
   // 插件
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
+      template: utils.p(env.PATH.static + '/index.html'),
       inject: 'body'
     }),
     new webpack.ProvidePlugin({
@@ -152,5 +155,9 @@ module.exports = {
       filename: '[name].[contenthash:6].css',
       disable: env.DEV
     }),
+    new BundleAnalyzerPlugin({
+      // analyzerMode: !dev ? 'static' : 'server',
+      // reportFilename: 'report_' + entryKey + '.html'
+    })
   ]
 };
