@@ -4,7 +4,8 @@ import stores from 'stores';
 import './style.use.less';
 
 const {Provider} = MobxReact;
-const {BrowserRouter: Router} = ReactRouterDOM;
+// const {BrowserRouter: Router} = ReactRouterDOM; // node 启动服务刷新页面白屏
+const {HashRouter: Router} = ReactRouterDOM; // node 启动服务刷新页面正常
 // import {BrowserRouter as Router, withRouter} from "react-router-dom";
 
 

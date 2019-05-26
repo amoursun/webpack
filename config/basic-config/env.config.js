@@ -59,6 +59,12 @@ config.PATH.dllDev = utils.p(config.PATH.dest + '/dll-dev/');
 config.PATH.dllProd = utils.p(config.PATH.dest + '/dll-prod/');
 config.PATH.dev = utils.p(config.PATH.dest + '/dev/');
 config.PATH.prod = utils.p(config.PATH.dest + '/prod/');
+config.PATH.prodPages = utils.p(config.PATH.prod + '/pages/');
+config.PATH.prodDll = utils.p(config.PATH.prod + '/dll/');
+config.PATH.prodDist = utils.p(config.PATH.prod + '/dist/');
+
+// webpack 构建的 entry 注册表
+config.entries = require('../webpack-config/entries.config')(config);
 
 
 outputConf(config);

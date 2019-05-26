@@ -1,7 +1,7 @@
 import {observable, action} from 'mobx';
 
 class State {
-    @observable title = '我是 Hello World'
+    @observable title = 'Hello World!!! 我是全局 stores'
 }
 
 export default new State();

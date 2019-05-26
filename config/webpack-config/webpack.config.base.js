@@ -1,10 +1,12 @@
 const path = require('path');
+const _ = require('lodash')
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html模板
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 优化或者压缩CSS资源
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 打包依赖图
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 // extract-text-webpack-plugin@next 也可以解决 从webpack v4开始，extract-text-webpack-plugin不应该用于css。请改用mini-css-extract-plugin。
 require('babel-polyfill');
 
@@ -18,8 +20,59 @@ const onlineStaticUrl = ''; // 静态资源上传地址
 // resolve 把一个路径或路径片段的序列解析为一个绝对路径(resolve把‘／’当成根目录)
 const pathJoin = (dirBase = __dirname, dir = '') => path.join(dirBase, dir);
 
-let presets = env.DEV ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : [];
+function getLibraryPath(isDev) {
+  let manifestPath;
+  let libraryPath;
 
+  if (isDev) {
+    libraryPath = utils.p(env.PATH.dllDev + '/vendor-manifest.json');
+    manifestPath = utils.p(env.PATH.dllDev + '/vendor-manifest.json');
+  } else {
+    libraryPath = utils.p(env.PATH.dllProd + '/vendor-manifest.json');
+    manifestPath = utils.p(env.PATH.dllProd + '/vendor-manifest.json');
+  }
+
+  return {
+    plugin: new webpack.DllReferencePlugin({
+      context: utils.p(env.PATH.root),
+      manifest: require(manifestPath)
+    }),
+    manifestPath,
+    libraryPath
+  };
+}
+
+let dll = getLibraryPath(env.DEV);
+
+const htmlWebpackPluginOptions = {
+  getMinify(isDev) {
+    if (isDev) {
+      return false;
+    }
+
+    return {
+      removeAttributeQuotes: true,
+      collapseWhitespace: true,
+      html5: true,
+      minifyCSS: true,
+      removeComments: true,
+      removeEmptyAttributes: true
+    };
+  },
+
+  getFileName(isDev, entryName) {
+    if (isDev) {
+      return `pages/${entryName}.html`;
+    }
+
+    return `../pages/${entryName}.html`;
+  },
+
+  extendData() {
+  }
+};
+
+let presets = env.DEV ? ['react-hot-loader/patch', 'webpack-hot-middleware/client'] : [];
 module.exports = {
   // 入口起点
   entry: presets.concat(['babel-polyfill', env.PATH.src + '/index.js']),
@@ -38,7 +91,7 @@ module.exports = {
       '@': pathJoin(env.PATH.root, 'src'),
       components: utils.p(env.PATH.src + '/components/'),
       layouts: utils.p(env.PATH.src + '/layouts/'),
-      module: utils.r(env.PATH.src,'module'),
+      module: utils.r(env.PATH.src, 'module'),
       routes: utils.p(env.PATH.src + '/routes/'),
       stores: utils.p(env.PATH.src + '/stores/'),
       utils: utils.p(env.PATH.srcNodeModules + '/utils/'),
@@ -121,10 +174,37 @@ module.exports = {
   // target: "web",
   // 插件
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: utils.p(env.PATH.static + '/index.html'),
-      inject: 'body'
+      inject: true
+    }),
+    // new HtmlWebpackPlugin({
+    //   hash: false,
+    //   inject: true, // 移动端 false
+    //
+    //   minify: htmlWebpackPluginOptions.getMinify(env.DEV),
+    //
+    //   filename: htmlWebpackPluginOptions.getFileName(env.DEV, 'entryName'),
+    //
+    //   template: template,
+    //   templateParameters: _.extend({
+    //     TIME: new Date().getFullYear().toString()
+    //         + (new Date().getMonth() + 1).toString()
+    //         + (new Date().getDate()).toString()
+    //         + (new Date().getHours()).toString()
+    //         + (new Date().getMinutes()).toString(),
+    //     I18N_VERSION: '',
+    //     entryName: 'entryName',
+    //     CONTEXT: ''
+    //   }, {}) // }, data)
+    // }),
+    new AddAssetHtmlPlugin({
+      filepath: dll.libraryPath,
+      includeSourcemap: false,
+      publicPath: '../dll',
+      outputPath: env.DEV ? 'dll' : '../dll'
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -144,20 +224,11 @@ module.exports = {
         return res;
       }, {}),
     ),
-    new webpack.DllReferencePlugin({
-      context: env.PATH.root,
-      manifest: env.DEV
-        ? require(utils.p(env.PATH.dllDev + '/vendor-manifest.json'))
-        : require(utils.p(env.PATH.dllProd + '/vendor-manifest.json'))
-
-    }),
+    dll.plugin,
     new ExtractTextWebpackPlugin({
       filename: '[name].[contenthash:6].css',
       disable: env.DEV
     }),
-    new BundleAnalyzerPlugin({
-      // analyzerMode: !dev ? 'static' : 'server',
-      // reportFilename: 'report_' + entryKey + '.html'
-    })
+    new BundleAnalyzerPlugin({})
   ]
 };
