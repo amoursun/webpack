@@ -8,7 +8,7 @@
     "dll": "npm run clean && node config/webpack-config/webpack.config.dll.js",
     "build": "npm run clean && npm run dll && npm run prod",
     "prod": "rimraf dest/prod/* && cross-env NODE_ENV=prod webpack --config config/build-config/index.js",
-    "dev": "cross-env HOST=true NODE_ENV=dev webpack-dev-server --config config/build-config/index.js --hot --inline --progress --colors --mode development",
+    "dev": "node ./config/build-config/config.dev.server.js",
     "start": "npm run dev",
     "mock": "node ./mock/mock-start.js",
     "mock2": "node ./mock/mock2/mock-start.js",

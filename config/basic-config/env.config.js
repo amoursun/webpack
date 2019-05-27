@@ -45,6 +45,9 @@ config.PATH.src = utils.p(config.ROOT + '/src/');
 config.PATH.config = utils.p(config.ROOT + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
+config.PATH.extra = utils.p(config.PATH.src + '/extra');
+
+config.PATH.dest = utils.p(config.ROOT + '/dest/');
 
 // 构建编译webpackConfig路径
 config.PATH.basicConfig = utils.p(config.PATH.config + '/basic-config/');
@@ -53,8 +56,10 @@ config.PATH.dllConfig = utils.p(config.PATH.config + '/dll-config/');
 config.PATH.templates = utils.p(config.PATH.config + '/templates/');
 config.PATH.webpackConfig = utils.p(config.PATH.config + '/webpack-config/');
 
+config.path.devEntries = utils.p(config.PATH.dest + '/dev-entries/');
+config.path.prodEntries = utils.p(config.PATH.dest + '/prod-entries/');
+
 // 构建输出路径
-config.PATH.dest = utils.p(config.ROOT + '/dest/');
 config.PATH.dllDev = utils.p(config.PATH.dest + '/dll-dev/');
 config.PATH.dllProd = utils.p(config.PATH.dest + '/dll-prod/');
 config.PATH.dev = utils.p(config.PATH.dest + '/dev/');
@@ -65,6 +70,9 @@ config.PATH.prodDist = utils.p(config.PATH.prod + '/dist/');
 
 // webpack 构建的 entry 注册表
 config.entries = require('../webpack-config/entries.config')(config);
+
+// backend 服务器
+config.path.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');
 
 
 outputConf(config);

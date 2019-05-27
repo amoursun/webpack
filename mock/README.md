@@ -45,7 +45,7 @@ fetch("/api/test/profile", {
 
 ```
 两种 server
-server1(server.js text.js)
+server1(server-dev.js text.js)
 server2(server-start.js mock-start.js tests)
 
 ```
