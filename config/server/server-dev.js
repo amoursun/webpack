@@ -1,16 +1,16 @@
 
 var webpack = require('webpack')
 var express = require('express')
-var utils = require('../config/basic-config/utils')
+var utils = require('../basic-config/utils')
 var path = require('path');
 
 var webpackDevMiddleware = require('webpack-dev-middleware')
 
-var utils = require('../config/basic-config/utils')
+var utils = require('../basic-config/utils')
 var fs = require('fs')
 var _ = require('lodash')
 
-var config = require('../config/basic-config/env.config');
+var config = require('../basic-config/env.config');
 
 /**
  * 启动 dev server (webpack, 共享项目 check 等)
@@ -45,7 +45,7 @@ var serverDevStart = function (opts) {
   // 得到 webpack 的config之后, 通过计算得到entry列表
   var webpackConfig = opts.lifeCycle.getWebpackConfig()
   var compiler = webpack(webpackConfig)
-  console.log(webpackConfig)
+  console.log('webpackConfig', webpackConfig)
 
   app.use(
     webpackDevMiddleware(compiler, {
@@ -67,6 +67,7 @@ var serverDevStart = function (opts) {
   }
 
   var httpServer = require('http').createServer(app)
+
   var starter = function () {
     httpServer.listen(opts.port, function (err) {
       if (err) {
@@ -80,7 +81,8 @@ var serverDevStart = function (opts) {
     })
   }
   starter()
-  return httpServer
+  console.log('httpStarter')
+  return httpServer;
 }
 
 module.exports = serverDevStart

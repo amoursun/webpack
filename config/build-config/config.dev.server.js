@@ -1,13 +1,13 @@
 var _ = require('lodash')
 var express = require('express')
-var serverStarter = require('../../server/server-dev')
+var serverStarter = require('../server/server-dev')
 var config = require('../basic-config/env.config')
 var util = require('util')
 var fs = require('fs')
 var getWebpackConfig = require('../webpack-config/webpack.config.base')
 var utils = require('../basic-config/utils')
 
-let TEMPLATE_NO_ENTRY = ''
+let TEMPLATE_NO_ENTRY = require('../webpack-config/common/server-consts').TEMPLATE_NO_ENTRY
 
 var compiled = _.template(
   fs.readFileSync(utils.p(__dirname + '/entry.template.js')).toString()
@@ -43,7 +43,7 @@ var serverUtils = {
 
       if (entryConfig.turnedOn !== entry.checked) {
         var pageEntryPath = utils.p(
-          config.path.devEntries + '/' + entry.id + '.js'
+          config.PATH.devEntries + '/' + entry.id + '.js'
         )
 
         // console.log('@debug, toggle entry = ', entryConfig, pageEntryPath, getEntryContent(entryConfig.entry))
@@ -64,13 +64,17 @@ var serverUtils = {
 function getEntry() {
   var reactHotLoaderPatch = 'react-hot-loader/patch'
 
+
   var webpackEntries = {}
+
   for (var pageName in config.entries) {
+
     var pageConfig = config.entries[pageName]
 
     var pageEntryPath = utils.p(
-      config.path.devEntries + '/' + pageName + '.js'
-    )
+      config.PATH.devEntries + '/' + pageName + '.js'
+    );
+
     if (pageConfig.openOnDefault) {
       fs.writeFileSync(pageEntryPath, getEntryContent(pageConfig.entry))
       pageConfig.turnedOn = true
@@ -117,8 +121,9 @@ module.exports = function (options) {
     logLevel: options.logLevel,
     lifeCycle: {
       getWebpackConfig: function () {
-        var entry = getEntry()
 
+        var entry = getEntry()
+        console.log('config.entries', entry)
         var webpackConfig = Object.keys(entry).map(function (entryName) {
           var eachOptions = entry[entryName].options || {}
           var options = _.extend({}, eachOptions, {
@@ -150,10 +155,10 @@ module.exports = function (options) {
         })
 
         // special backend
-        require('../nodemmn-server/nodemon')
+        require('../nodemon-server/nodemon')
 
         // AddAssetHtmlPlugin work for this
-        // app.use('/dll', express.static(config.path.dllDev))
+        // app.use('/dll', express.static(config.PATH.dllDev))
 
         app.use(
           '/extra',

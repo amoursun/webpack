@@ -10,7 +10,7 @@ const env = require('../basic-config/env.config');
 
 const dllDevConfig = {
   mode: 'development',
-  context: utils.p(env.PATH.src),
+  context: utils.p(env.PATH.root), // env.PATH.src
   entry: {
     vendor: names.dependencies.concat([/*添加其他依赖*/]),
   },
@@ -21,7 +21,7 @@ const dllDevConfig = {
   },
   // optimization: {}, // dllDev 不需要压缩
   module: {
-    rules: require(utils.p(env.PATH.webpackConfig + '/loader.base'))(env.DEV)
+    rules: require(utils.p(env.PATH.webpackConfig + '/loader.base'))(true)
   },
   plugins: [
     new webpack.DefinePlugin({

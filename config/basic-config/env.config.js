@@ -6,6 +6,7 @@ const dev = /dev/i.test(env);
 const https = getEnv('HTTPS', false);
 const host = process.env.HOST ? getIpAddress() : 'localhost';
 const port = parseInt(getEnv('PORT', 8088));
+const prodPort = parseInt(getEnv('PRODPORT', 8118));
 
 var npath = require('path');
 var _ = require('lodash');
@@ -24,6 +25,7 @@ const config = {
     HTTPS: https,
     HOST: host,
     PORT: port,
+    PRODPORT: prodPort,
     BASENAME: '', // BrowserRouter 的 basename
     SERVICE_IP: service_ip,
     ENV: env,
@@ -56,8 +58,8 @@ config.PATH.dllConfig = utils.p(config.PATH.config + '/dll-config/');
 config.PATH.templates = utils.p(config.PATH.config + '/templates/');
 config.PATH.webpackConfig = utils.p(config.PATH.config + '/webpack-config/');
 
-config.path.devEntries = utils.p(config.PATH.dest + '/dev-entries/');
-config.path.prodEntries = utils.p(config.PATH.dest + '/prod-entries/');
+config.PATH.devEntries = utils.p(config.PATH.dest + '/dev-entries/');
+config.PATH.prodEntries = utils.p(config.PATH.dest + '/prod-entries/');
 
 // 构建输出路径
 config.PATH.dllDev = utils.p(config.PATH.dest + '/dll-dev/');
@@ -72,10 +74,10 @@ config.PATH.prodDist = utils.p(config.PATH.prod + '/dist/');
 config.entries = require('../webpack-config/entries.config')(config);
 
 // backend 服务器
-config.path.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');
+config.PATH.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');
 
 
-outputConf(config);
+// outputConf(config); // 先注释,打印环境变量
 
 module.exports = config;
 

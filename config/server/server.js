@@ -3,14 +3,14 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-const devConfig = require('../config/build-config/webpack.config.dev');
-const env = require('../config/basic-config/env.config');
+const devConfig = require('../build-config/webpack.config.dev');
+const env = require('../basic-config/env.config');
 
 // 服务器框架
 const express = require('express');
 const app = express();
 
-const utils = require('../config/basic-config/utils')
+const utils = require('../basic-config/utils')
 
 const compiler = webpack(devConfig);
 

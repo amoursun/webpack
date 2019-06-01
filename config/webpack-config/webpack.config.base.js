@@ -1,7 +1,8 @@
 const path = require('path');
 const _ = require('lodash')
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+// const merge = require('webpack-merge');
+const assign = require('../basic-config/assign')
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html模板
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 优化或者压缩CSS资源
@@ -97,7 +98,8 @@ module.exports = function (options) {
 
   let dll = getLibraryPath(dev);
 
-  return merge({
+  // return merge({
+  return assign({
     // 入口起点
     // entry: presets.concat(['babel-polyfill', env.PATH.src + '/index.js']),
     entry: entry,
@@ -106,11 +108,11 @@ module.exports = function (options) {
     context: env.PATH.root,
     // 输出
     output: {
-      filename: dev ? '[name].js' : '[name]-[chunkhash:8].js',
+      filename: !dev ? '[name].bundle.[chunkhash:6].js' : '[name].bundle.[hash:6].js',
       // publicPath: env.DEV ? env.CLIENT : `${onlineStaticUrl}/`,
-      publicPath: dev ? '/' : '/dest/prod/',
-      path: env.PATH.dev,
-      chunkFilename: '[name].[chunkhash:8].js',
+      publicPath: dev ? '/dist/' : '../dest/',
+      path: env.PATH.prodDist,
+      chunkFilename: '[name].[chunkhash:6].js',
     },
     // 解析
     resolve: {
@@ -195,9 +197,22 @@ module.exports = function (options) {
       }
     },
     // loader
-    module: {
+    // module: {
+    //   rules: require('./loader.base')(dev)
+    // }, html报错要求解析 html loader
+    module: assign({
       rules: require('./loader.base')(dev)
-    },
+    }, {
+      rules: [
+        {
+          test: /\.(html|md)$/,
+          exclude: [env.PATH.templates],
+          use: {
+            loader: 'html-loader'
+          }
+        }
+      ]
+    }),
     // 目标运行环境
     // target: "web",
     // 插件
@@ -217,7 +232,7 @@ module.exports = function (options) {
         filename: htmlWebpackPluginOptions.getFileName(dev, entryName),
 
         template: template,
-        templateParameters: _.extend({
+        data: _.extend({
           TIME: new Date().getFullYear().toString()
           + (new Date().getMonth() + 1).toString()
           + (new Date().getDate()).toString()
@@ -226,7 +241,18 @@ module.exports = function (options) {
           I18N_VERSION: '',
           entryName: entryName,
           CONTEXT: ''
-        }, data)
+        }, data),
+        // 使用 templateParameters html 里就不能使用htmlWebpackPlugin.options.xxx, 直接使用xxx
+        // templateParameters: _.extend({
+        //   TIME: new Date().getFullYear().toString()
+        //   + (new Date().getMonth() + 1).toString()
+        //   + (new Date().getDate()).toString()
+        //   + (new Date().getHours()).toString()
+        //   + (new Date().getMinutes()).toString(),
+        //   I18N_VERSION: '',
+        //   entryName: entryName,
+        //   CONTEXT: ''
+        // }, data)
       }),
       new AddAssetHtmlPlugin({
         filepath: dll.libraryPath,
@@ -257,7 +283,7 @@ module.exports = function (options) {
         filename: '[name].[contenthash:6].css',
         disable: dev
       }),
-      new BundleAnalyzerPlugin({})
+      // new BundleAnalyzerPlugin({analyzerPort: 4000})
     ]
   }, customConfig)
 };
