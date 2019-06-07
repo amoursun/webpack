@@ -21,6 +21,7 @@ var utils = {
     return utils.p(path).replace('\/', '/')
   },
 
+  // 创建文件夹
   ensurePath: function (path) {
     if (!fs.existsSync(path)) {
       utils.ensurePath(npath.dirname(path))

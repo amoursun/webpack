@@ -34,6 +34,18 @@ module.exports = function (config) {
       template: templateConfig
     }
   });
+
+  // develop modules entries
+  _.merge(entries, {
+    'open-page': {
+      openOnDefault: true,
+      entry: 'common/Page/PageEntryManagement',
+      template: {
+        dev: templates.dev.default,
+      },
+    },
+  });
+
   return entries;
 };
 

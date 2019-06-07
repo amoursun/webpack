@@ -280,7 +280,7 @@ module.exports = function (options) {
       ),
       dll.plugin,
       new ExtractTextWebpackPlugin({
-        filename: '[name].[contenthash:6].css',
+        filename: '[name].[md5:contenthash:hex:20].css', // '[name].[contenthash:6].css',
         disable: dev
       }),
       // new BundleAnalyzerPlugin({analyzerPort: 4000})

@@ -1,12 +1,12 @@
 /**
  * 系统变量配置
  */
-const env = getEnv('NODE_ENV', 'dev');
-const dev = /dev/i.test(env);
-const https = getEnv('HTTPS', false);
-const host = process.env.HOST ? getIpAddress() : 'localhost';
-const port = parseInt(getEnv('PORT', 8088));
-const prodPort = parseInt(getEnv('PRODPORT', 8118));
+var env = getEnv('NODE_ENV', 'dev');
+var dev = /dev/i.test(env);
+var https = getEnv('HTTPS', false);
+var host = process.env.HOST ? getIpAddress() : 'localhost';
+var port = parseInt(getEnv('PORT', 8088));
+var prodPort = parseInt(getEnv('PRODPORT', 8118));
 
 var npath = require('path');
 var _ = require('lodash');
@@ -69,6 +69,7 @@ config.PATH.prod = utils.p(config.PATH.dest + '/prod/');
 config.PATH.prodPages = utils.p(config.PATH.prod + '/pages/');
 config.PATH.prodDll = utils.p(config.PATH.prod + '/dll/');
 config.PATH.prodDist = utils.p(config.PATH.prod + '/dist/');
+config.PATH.prodExtra = utils.p(config.PATH.prod + '/extra/');
 
 // webpack 构建的 entry 注册表
 config.entries = require('../webpack-config/entries.config')(config);
@@ -76,6 +77,10 @@ config.entries = require('../webpack-config/entries.config')(config);
 // backend 服务器
 config.PATH.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');
 
+// 确保所有文件夹都已经创建
+for (var pathName in config.PATH) {
+  utils.ensurePath(config.PATH[pathName]);
+}
 
 // outputConf(config); // 先注释,打印环境变量
 
