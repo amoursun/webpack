@@ -7,6 +7,8 @@ var fs = require('fs')
 var getWebpackConfig = require('../webpack-config/webpack.config.base')
 var utils = require('../basic-config/utils')
 
+var bodyParser = require('body-parser')
+
 let TEMPLATE_NO_ENTRY = require('../webpack-config/common/server-consts').TEMPLATE_NO_ENTRY
 
 var compiled = _.template(
@@ -148,10 +150,58 @@ module.exports = function (options) {
        * 加载特殊的 开发服务器的 逻辑处理
        */
       loadDevServerLogic: function (app, context) {
+        app.all('/', function (req, res) {
+          res.redirect('/pages/open-page.html')
+        })
         app.use('*', function (req, res, next) {
           next()
           // console.log('req', req.headers)
           // console.log('res', res.headers)
+        })
+
+        app.use('/_/entries_module/*', bodyParser.json())
+
+        app.all('/_/entries_module/api/all-entries', function (req, res) {
+          res.send(serverUtils.wrapResponse(config.entries))
+        })
+
+        app.all('/_/entries_module/api/toggle-entries', function (req, res) {
+          // console.log('@debug, entries = ', req.body)
+          serverUtils.toggleEntries(req.body.entries)
+          res.send(serverUtils.wrapResponse())
+        })
+
+        app.all('/_/entries_module/api/toggle-entry', function (req, res) {
+          var pageConfigObject = req.body.pageConfigObject
+          if (pageConfigObject) {
+            _.each(pageConfigObject, function (pageConfig,
+                                               pageName) {
+              if (config.entries[pageName]) {
+                var pageEntryPath = utils.p(
+                  config.PATH.devEntries +
+                  '/' +
+                  pageName +
+                  '.js'
+                )
+
+                if (pageConfig.turnOn) {
+                  fs.writeFileSync(
+                    pageEntryPath,
+                    getEntryContent(pageConfig.entry)
+                  )
+                } else {
+                  fs.writeFileSync(
+                    pageEntryPath,
+                    TEMPLATE_NO_ENTRY
+                  )
+                }
+              } else {
+                utils.logs([
+                  'error: 入口模块未找到 ' + pageName
+                ])
+              }
+            })
+          }
         })
 
         // special backend

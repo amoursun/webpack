@@ -4,9 +4,10 @@
  */
 
 import {observable, action} from 'mobx'
+import GlobalState from 'common/react-mobx-init/global-state'
 import Root from 'utils/Root'
 
-export default class AppState extends Root {
+export default class AppState extends GlobalState {
     constructor(props) {
         super(props)
     }

@@ -1,4 +1,4 @@
 
-var backendServer = require('./server-starter')
+var configServer = require('./server-starter')
 
-backendServer.start();
+configServer.start();

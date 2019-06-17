@@ -27,10 +27,10 @@ function getLibraryPath(isDev) {
   let libraryPath;
 
   if (isDev) {
-    libraryPath = utils.p(env.PATH.dllDev + '/vendor-manifest.json');
+    libraryPath = utils.p(env.PATH.dllDev + '/*.js');
     manifestPath = utils.p(env.PATH.dllDev + '/vendor-manifest.json');
   } else {
-    libraryPath = utils.p(env.PATH.dllProd + '/vendor-manifest.json');
+    libraryPath = utils.p(env.PATH.dllProd + '/*.js');
     manifestPath = utils.p(env.PATH.dllProd + '/vendor-manifest.json');
   }
 
@@ -77,9 +77,7 @@ module.exports = function (options) {
 
   options = options || {}
   let dev = 'dev' in options ? options.dev : process.env.NODE_ENV !== 'production'
-  let template =
-    options.template ||
-    (
+  let template = options.template || (
       dev ? path.join(env.PATH.templates, 'dev-page.html')
         : path.join(env.PATH.templates, 'prod-page.html')
     )
@@ -104,21 +102,22 @@ module.exports = function (options) {
     // entry: presets.concat(['babel-polyfill', env.PATH.src + '/index.js']),
     entry: entry,
     cache: true,
+    recordsPath: path.join(env.PATH.root, 'tmp', entryName + '-records.json'),
     name: entryName,
     context: env.PATH.root,
     // 输出
     output: {
-      filename: !dev ? '[name].bundle.[chunkhash:6].js' : '[name].bundle.[hash:6].js',
-      // publicPath: env.DEV ? env.CLIENT : `${onlineStaticUrl}/`,
-      publicPath: dev ? '/dist/' : '../dest/',
       path: env.PATH.prodDist,
+      filename: !dev ? '[name].bundle.[chunkhash:6].js' : '[name].bundle.[hash:6].js',
       chunkFilename: '[name].[chunkhash:6].js',
+      // publicPath: env.DEV ? env.CLIENT : `${onlineStaticUrl}/`,
+      publicPath: dev ? '/dist/' : '../dist/',
     },
     // 解析
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.json'],
       alias: { // import xxx from 'components/xxx'
-        '@': pathJoin(env.PATH.root, 'src'),
+        src: pathJoin(env.PATH.root, 'src'),
         components: utils.p(env.PATH.src + '/components/'),
         layouts: utils.p(env.PATH.src + '/layouts/'),
         module: utils.r(env.PATH.src, 'module'),
@@ -254,6 +253,7 @@ module.exports = function (options) {
         //   CONTEXT: ''
         // }, data)
       }),
+      // 添加资产时，它会添加到数组的开头，因此在 html-webpack-plugin注入资产时，它会先于其他资产
       new AddAssetHtmlPlugin({
         filepath: dll.libraryPath,
         includeSourcemap: false,

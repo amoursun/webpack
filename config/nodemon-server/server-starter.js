@@ -8,15 +8,11 @@ var utils = require('../basic-config/utils')
  *
  * @type {{start: backendServer.start}}
  */
-var backendServer = {
+var configServer = {
     start: function(opts) {
         opts = opts || {}
 
         var app = opts.app || express()
-
-        app.all('/api/something', function(req, res) {
-            res.send({hello: 'world'});
-        })
 
         if (!opts.app) {
             app.listen(config.PRODPORT, function (err) {
@@ -31,4 +27,4 @@ var backendServer = {
     }
 }
 
-module.exports = backendServer;
+module.exports = configServer;

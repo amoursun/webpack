@@ -19,7 +19,7 @@ if (env.toLowerCase().indexOf('dev') > -1) {
     service_ip = 'localhost';
 }
 
-const config = {
+var config = {
     VERSION: require('../../package').version,
     PROTOCOL: https ? 'https' : 'http',
     HTTPS: https,
@@ -47,7 +47,7 @@ config.PATH.src = utils.p(config.ROOT + '/src/');
 config.PATH.config = utils.p(config.ROOT + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
-config.PATH.extra = utils.p(config.PATH.src + '/extra');
+config.PATH.extra = utils.p(config.PATH.src + '/extra/');
 
 config.PATH.dest = utils.p(config.ROOT + '/dest/');
 
@@ -73,6 +73,13 @@ config.PATH.prodExtra = utils.p(config.PATH.prod + '/extra/');
 
 // webpack 构建的 entry 注册表
 config.entries = require('../webpack-config/entries.config')(config);
+
+// 发布脚本配置位置
+config.PATH.buildPlans = utils.p(config.PATH.webpackConfig + '/build-plans/');
+
+// 功能性路径
+config.PATH.tmp = utils.p(config.PATH.root + '/tmp/');
+config.PATH.doc = utils.p(config.PATH.root + '/doc/');
 
 // backend 服务器
 config.PATH.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');

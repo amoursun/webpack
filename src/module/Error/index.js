@@ -3,7 +3,7 @@
  * @author YOURNAME
  */
 
-import initer, {isDevMode} from 'common/react-mobx-initer'
+import initer, {isDevMode} from 'common/react-mobx-init'
 
 // 项目全局 less
 import 'common/style/main.less'

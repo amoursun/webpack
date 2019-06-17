@@ -1,5 +1,11 @@
+// node 不需要
 if (process.env.NODE_ENV === 'prod') {
-    module.exports = require('./config.prod.server')({});
+  let opts = {}
+  require('./config.prod.server').execute({
+    sourceMap: opts.sourceMap,
+    buildPlanKey: opts.buildPlanKey,
+    enableProfiling: opts.enableProfile
+  });
 } else if (process.env.NODE_ENV === 'dev') {
-    module.exports = require('./config.dev.server')({});
+  require('./config.dev.server')({});
 }

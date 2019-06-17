@@ -63,6 +63,7 @@ const mocker = path.resolve(__dirname, '../../_mocker_/index.js');
 const webpackConfig = {
   mode: 'development', // webpack4新增属性，默认返回production,提供一些默认配置，例如cache:true
   devtool: 'cheap-module-eval-source-map',
+  // devtool: 'cheap-source-map',
   // source-map每个module生成对应的map文件
   // eval 每一个module模块执行eval，不生成map文件，在尾部生成一个sourceURL对应前后关系，所以更快
   // cheap 列信息 VLQ编码
