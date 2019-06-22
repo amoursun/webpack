@@ -20,9 +20,8 @@ module.exports = function (buildPlanConfig, options) {
         entries[entryKey] = presets.concat(entryScriptPath)
         var eachConfig = getWebpackConfig({
             dev: dev,
-            template:
-            entryConfig.template &&
-            entryConfig.template[dev ? 'dev' : 'prod'],
+            template: entryConfig.template && entryConfig.template[dev ? 'dev' : 'prod'],
+            type: entryConfig.type,
             entryName: entryKey,
             data: entryConfig.data
         })

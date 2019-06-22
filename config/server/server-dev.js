@@ -35,7 +35,7 @@ var serverDevStart = function (opts) {
   }
 
   utils.log(['', '[Detected entries for webpack]'.magenta + ':'])
-  utils.log(['', config.entries])
+  // utils.log(['', config.entries])
 
   if (opts.lifeCycle.generateHtml) {
     opts.lifeCycle.generateHtml(app, {})
@@ -45,7 +45,7 @@ var serverDevStart = function (opts) {
   // 得到 webpack 的config之后, 通过计算得到entry列表
   var webpackConfig = opts.lifeCycle.getWebpackConfig()
   var compiler = webpack(webpackConfig)
-  console.log('webpackConfig', webpackConfig)
+  // console.log('webpackConfig', webpackConfig)
 
   app.use(
     webpackDevMiddleware(compiler, {

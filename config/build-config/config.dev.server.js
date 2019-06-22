@@ -125,13 +125,14 @@ module.exports = function (options) {
       getWebpackConfig: function () {
 
         var entry = getEntry()
-        console.log('config.entries', entry)
+        // console.log('config.entries', entry)
         var webpackConfig = Object.keys(entry).map(function (entryName) {
           var eachOptions = entry[entryName].options || {}
           var options = _.extend({}, eachOptions, {
             dev: true,
             entryName: entryName,
-            template: entry[entryName] && entry[entryName].dev
+            template: entry[entryName] && entry[entryName].dev,
+            type: entry[entryName].type
           })
           var config = getWebpackConfig(options)
           config.entry = {[entryName]: entry[entryName]}

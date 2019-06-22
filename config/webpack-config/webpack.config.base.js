@@ -6,21 +6,30 @@ const assign = require('../basic-config/assign')
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 生成html模板
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin'); // 优化或者压缩CSS资源
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // 打包依赖图
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+// const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const MiniCSSPlugin = require('mini-css-extract-plugin'); // mini-css-extract-plugin(webpack@4) 替代 extract-text-webpack-plugin(webpack@3)
 // extract-text-webpack-plugin@next 也可以解决 从webpack v4开始，extract-text-webpack-plugin不应该用于css。请改用mini-css-extract-plugin。
 require('babel-polyfill');
 
 const utils = require('../basic-config/utils')
 
 const env = require('../basic-config/env.config');
+const {ENTRY_TYPE, BUILD_TIME} = env.CONST;
 
 const onlineStaticUrl = ''; // 静态资源上传地址
 
 // join 链接两个文件 path.join('foo', 'baz', 'bar'); // 返回 'foo/baz/bar'
 // resolve 把一个路径或路径片段的序列解析为一个绝对路径(resolve把‘／’当成根目录)
 const pathJoin = (dirBase = __dirname, dir = '') => path.join(dirBase, dir);
+
+function isMobile(type) {
+  if (type.indexOf('mobile-') === 0) {
+    return true;
+  }
+  return false;
+}
 
 function getLibraryPath(isDev) {
   let manifestPath;
@@ -72,10 +81,21 @@ const htmlWebpackPluginOptions = {
   }
 };
 
+const extractTextPluginOptions = {
+  getFileName(type) {
+    if (isMobile(type)) {
+      return '[name].css';
+    }
+    return '[name].[chunkhash:6].css';
+  }
+};
+
 module.exports = function (options) {
-  let customConfig = env.DEV ? require('../build-config/webpack.config.dev') : require('../build-config/webpack.config.prod');
 
   options = options || {}
+  let {
+    type = ENTRY_TYPE.PC_NORMAL
+  } = options
   let dev = 'dev' in options ? options.dev : process.env.NODE_ENV !== 'production'
   let template = options.template || (
       dev ? path.join(env.PATH.templates, 'dev-page.html')
@@ -95,6 +115,8 @@ module.exports = function (options) {
   });
 
   let dll = getLibraryPath(dev);
+
+  let customConfig = dev ? require('../build-config/webpack.config.dev') : require('../build-config/webpack.config.prod');
 
   // return merge({
   return assign({
@@ -160,40 +182,43 @@ module.exports = function (options) {
         new OptimizeCSSAssetsPlugin({}),
       ],
       splitChunks: {
-        minSize: 30000,
-        minChunks: 1,
-        maxAsyncRequests: 5,
-        maxInitialRequests: 3,
-        name: false, // 抽取出来文件的名字，默认为 true，表示自动生成文件名；
-        cacheGroups: {
-          vendor: {
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            minChunks: 1,
-            maxInitialRequests: 5,
-            minSize: 0,
-            priority: 100,
-          },
-          common: {
-            chunks: 'all',
-            test: /[\\/]src[\\/]/,
-            name: 'common',
-            minChunks: 2,
-            maxInitialRequests: 5,
-            minSize: 0,
-            priority: 1,
-          },
-          // styles: {
-          //   name: 'styles',
-          //   test: /\.css|less$/,
-          //   chunks: 'all',
-          //   minChunks: 1,
-          //   reuseExistingChunk: true,
-          //   enforce: true,
-          // }
-        }
-      }
+        name: 'common'
+      },
+      // splitChunks: {
+      //   minSize: 30000,
+      //   minChunks: 1,
+      //   maxAsyncRequests: 5,
+      //   maxInitialRequests: 3,
+      //   name: false, // 抽取出来文件的名字，默认为 true，表示自动生成文件名；
+      //   cacheGroups: {
+      //     vendor: {
+      //       chunks: 'all',
+      //       test: /[\\/]node_modules[\\/]/,
+      //       name: 'vendor',
+      //       minChunks: 1,
+      //       maxInitialRequests: 5,
+      //       minSize: 0,
+      //       priority: 100,
+      //     },
+      //     common: {
+      //       chunks: 'all',
+      //       test: /[\\/]src[\\/]/,
+      //       name: 'common',
+      //       minChunks: 2,
+      //       maxInitialRequests: 5,
+      //       minSize: 0,
+      //       priority: 1,
+      //     },
+      //     // styles: {
+      //     //   name: 'styles',
+      //     //   test: /\.css|less$/,
+      //     //   chunks: 'all',
+      //     //   minChunks: 1,
+      //     //   reuseExistingChunk: true,
+      //     //   enforce: true,
+      //     // }
+      //   }
+      // }
     },
     // loader
     // module: {
@@ -279,9 +304,16 @@ module.exports = function (options) {
         }, {}),
       ),
       dll.plugin,
-      new ExtractTextWebpackPlugin({
-        filename: '[name].[md5:contenthash:hex:20].css', // '[name].[contenthash:6].css',
-        disable: dev
+      // new ExtractTextWebpackPlugin({
+      //   // filename: '[name].[contenthash:6].css',
+      //   filename: '[name].[md5:contenthash:hex:20].css',
+      //   disable: dev
+      // }),
+      // MiniCSSPlugin 代替 ExtractTextWebpackPlugin => webpack4
+      new MiniCSSPlugin({
+        filename: extractTextPluginOptions.getFileName(type),
+        chunkFilename: '[name].[id].css'
+        // disable: dev
       }),
       // new BundleAnalyzerPlugin({analyzerPort: 4000})
     ]

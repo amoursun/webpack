@@ -10,6 +10,7 @@ var prodPort = parseInt(getEnv('PRODPORT', 8118));
 
 var npath = require('path');
 var _ = require('lodash');
+let moment = require('moment');
 var utils = require('./utils');
 
 let service_ip;
@@ -83,6 +84,31 @@ config.PATH.doc = utils.p(config.PATH.root + '/doc/');
 
 // backend 服务器
 config.PATH.nodemonServer = utils.p(config.PATH.config + '/nodemon-server/');
+
+// 开发环境所用的一些常数
+config.CONST = {
+  // 用于提供给未打开的 entry 作为其内容使用
+  TEMPLATE_NO_ENTRY: '/*DON\'T MODIFY THIS LINE*/document.body.innerHTML = "<h1>该模块尚未打开, 请到 <a href=\'/\'>管理面板 </a>里打开该入口.</h1>"',
+
+  // 指定哪些路径下的资源会被解析为 mobile 端的资源
+  MOBILE_CODE_PATH_LIST: [
+    npath.resolve(config.PATH.src, 'module/Mobile')
+  ],
+
+  BUILD_TIME: moment().format('YYYYMMDDHHmm'),
+  CONTEXT: '',
+  I18N_VERSION: '',
+
+  ENTRY_PREFIX: {
+    MOBILE: 'mobile-',
+    PC: 'pc-',
+  },
+
+  ENTRY_TYPE: {
+    // default
+    PC_NORMAL: 'pc-normal',
+  }
+};
 
 // 确保所有文件夹都已经创建
 for (var pathName in config.PATH) {

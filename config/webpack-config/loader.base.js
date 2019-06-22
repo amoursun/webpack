@@ -4,6 +4,7 @@ const babelConfig = require('./babelConfig')
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+const MiniCSSPlugin = require('mini-css-extract-plugin'); // mini-css-extract-plugin(webpack@4) 替代 extract-text-webpack-plugin(webpack@3)
 
 const postcssLoader = {
   loader: 'postcss-loader',
@@ -71,13 +72,23 @@ const babelBase = isDev => {
         /\.mod\.css$/,
         /\.use(able)?\.css$/
       ],
-      use: ExtractTextWebpackPlugin.extract({
-        use: [
-          {loader: 'css-loader', options: {minimize: isDev}},
-          postcssLoader
-        ],
-        fallback: 'style-loader'
-      })
+      use: [
+        {
+          loader: MiniCSSPlugin.loader,
+          options: {
+            hmr: isDev
+          }
+        },
+        {loader: 'css-loader', options: {minimize: !isDev}},
+        postcssLoader
+      ],
+      // use: ExtractTextWebpackPlugin.extract({
+      //   use: [
+      //     {loader: 'css-loader', options: {minimize: !isDev}},
+      //     postcssLoader
+      //   ],
+      //   fallback: 'style-loader'
+      // })
       // use: [
       //   {loader: 'style-loader'},
       //   {
@@ -93,7 +104,7 @@ const babelBase = isDev => {
       test: /\.use(able)?\.css/,
       use: [
         {loader: 'style-loader/useable'},
-        {loader: 'css-loader', options: {minimize: isDev}},
+        {loader: 'css-loader', options: {minimize: !isDev}},
         postcssLoader,
         {loader: 'less-loader'}
       ]
@@ -104,14 +115,25 @@ const babelBase = isDev => {
         /\.mod\.less/,
         /\.use(able)?\.less$/
       ],
-      use: ExtractTextWebpackPlugin.extract({
-        use: [
-          {loader: 'css-loader', options: {minimize: isDev}},
-          postcssLoader,
-          {loader: 'less-loader'}
-        ],
-        fallback: 'style-loader'
-      })
+      use: [
+        {
+          loader: MiniCSSPlugin.loader,
+          options: {
+            hmr: isDev
+          }
+        },
+        {loader: 'css-loader', options: {minimize: !isDev}},
+        postcssLoader,
+        {loader: 'less-loader'}
+      ],
+      // use: ExtractTextPlugin.extract({
+      //   use: [
+      //     { loader: 'css-loader', options: { minimize: !isDev } },
+      //     postcssLoader,
+      //     { loader: 'less-loader' }
+      //   ],
+      //   fallback: 'style-loader'
+      // })
       // use: [
       //   {loader: 'style-loader'},
       //   {
@@ -134,7 +156,7 @@ const babelBase = isDev => {
       test: /\.use(able)?\.less$/,
       use: [
         {loader: 'style-loader/useable'},
-        {loader: 'css-loader', options: {minimize: isDev}},
+        {loader: 'css-loader', options: {minimize: !isDev}},
         postcssLoader,
         {loader: 'less-loader'}
       ]
