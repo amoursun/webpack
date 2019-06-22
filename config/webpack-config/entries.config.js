@@ -23,7 +23,7 @@ module.exports = function (config) {
   // 注意调整 alias
   _.merge(entries, {
     'home': {
-      entry: 'src/module/Home/index.js',
+      entry: 'src/index.js',
       template: templateConfig,
       // data: {
       // 一些额外的数据  可以在模板中获取到
