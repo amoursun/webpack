@@ -104,8 +104,6 @@ module.exports = function (options) {
   let entryName = options.entryName || 'entryName'
   let data = options.data || {}
   let entry = options.entry
-  console.log('env.DEV', env.DEV)
-  console.log('dev', dev)
   let customConfig = !dev ? require('../build-config/webpack.config.prod') : require('../build-config/webpack.config.dev');
 
   if (_.isString(entry)) {
