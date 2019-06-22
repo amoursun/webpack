@@ -44,8 +44,6 @@ const utils = require('../basic-config/utils');
 module.exports = {
   // 模式
   mode: 'production',
-  // 调试工具
-  devtool: '#source-map',
   // 插件
   plugins: [
     // new CleanWebpackPlugin(['dest'], {
@@ -62,7 +60,7 @@ module.exports = {
       context: utils.p(env.PATH.src),
       manifest: require(utils.p(env.PATH.dllProd + '/vendor-manifest.json'))
     }),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
     new webpack.HashedModuleIdsPlugin()
   ],
 };

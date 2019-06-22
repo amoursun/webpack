@@ -21,7 +21,7 @@ if (env.toLowerCase().indexOf('dev') > -1) {
 }
 
 var config = {
-    VERSION: require('../../package').version,
+    VERSION: require('../../../package').version,
     PROTOCOL: https ? 'https' : 'http',
     HTTPS: https,
     HOST: host,
@@ -36,7 +36,7 @@ var config = {
     HOT: getEnv('HOT', dev),
     INLINE: getEnv('INLINE', dev),
     PATH: {},
-    ROOT: npath.join(__dirname, '../..')
+    ROOT: npath.join(__dirname, '../../..')
 };
 
 config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
@@ -45,10 +45,11 @@ config.CLIENT = `${config.PROTOCOL}://${config.HOST}:${config.PORT}/`;
 config.PATH.root = config.ROOT;
 config.PATH.static = utils.p(config.ROOT + '/static/');
 config.PATH.src = utils.p(config.ROOT + '/src/');
-config.PATH.config = utils.p(config.ROOT + '/config/');
+config.PATH.frontend = utils.p(config.PATH.src + '/frontend/');
+config.PATH.config = utils.p(config.PATH.src + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
-config.PATH.srcNodeModules = utils.p(config.PATH.src + '/node_modules');
-config.PATH.extra = utils.p(config.PATH.src + '/extra/');
+config.PATH.frontendNodeModules = utils.p(config.PATH.frontend + '/node_modules');
+config.PATH.extra = utils.p(config.PATH.frontend + '/extra/');
 
 config.PATH.dest = utils.p(config.ROOT + '/dest/');
 

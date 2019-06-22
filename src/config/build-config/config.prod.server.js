@@ -60,10 +60,10 @@ module.exports = {
     // utils.ensurePath(utils.p(config.PATH.prod + '/extra'))
     // cp.sync(config.PATH.extraFrontendAsset, utils.p(config.PATH.prod + '/extra'))
 
-    utils.log([
-      'debug: webpack entry config = ',
-      util.inspect(webpackConfig, {depth: null})
-    ])
+    // utils.log([
+    //   'debug: webpack entry config = ',
+    //   util.inspect(webpackConfig, {depth: null})
+    // ])
 
     // 构建
     var compiler = webpack(webpackConfig)
