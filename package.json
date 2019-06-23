@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dest/dll-dev/* dest/dll-prod/*",
-    "dll": "npm run clean && node ./src/frontendconfig/webpack-config/webpack.config.dll.js",
+    "dll": "npm run clean && node ./src/config/webpack-config/webpack.config.dll.js",
     "build": "npm run clean && npm run dll && npm run prod",
     "prod": "node ./src/config/build-config/prod.server.js",
     "dev": "node ./src/config/build-config/dev.server.js",
