@@ -14,7 +14,6 @@ const MiniCSSPlugin = require('mini-css-extract-plugin'); // mini-css-extract-pl
 require('babel-polyfill');
 
 const utils = require('../basic-config/utils')
-
 const env = require('../basic-config/env.config');
 const {ENTRY_TYPE, BUILD_TIME} = env.CONST;
 
@@ -45,7 +44,7 @@ function getLibraryPath(isDev) {
 
   return {
     plugin: new webpack.DllReferencePlugin({
-      context: utils.p(env.PATH.root),
+      context: utils.p(env.PATH.src),
       manifest: require(manifestPath)
     }),
     manifestPath,
@@ -304,6 +303,7 @@ module.exports = function (options) {
           }, {}),
         ),
         dll.plugin,
+
         // new ExtractTextWebpackPlugin({
         //   // filename: '[name].[contenthash:6].css',
         //   filename: '[name].[md5:contenthash:hex:20].css',

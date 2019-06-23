@@ -213,7 +213,7 @@ module.exports = function (options) {
 
         app.use(
           '/extra',
-          express.static(config.PATH.extra)
+          express.static(config.PATH.extraFrontend)
         )
       }
     }

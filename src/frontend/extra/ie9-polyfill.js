@@ -1,8 +1,8 @@
 /**
  * @file: ie9-polyfill.js
- * @author: Cuttle Cong
- * @date: 2017/11/23
- * @description: 
+ * @author: gyl
+ * @date: 2019/06/22
+ * @description:
  */
 
 (function () {

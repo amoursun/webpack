@@ -1,4 +1,3 @@
-'use strict'
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('../webpack-config/webpack.config.base');
 
@@ -6,6 +5,8 @@ const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin'); // 引入清除文件插件
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
+
 const copyPlugin = require('../webpack-config/plugins/copy')
 
 const env = require('../basic-config/env.config');

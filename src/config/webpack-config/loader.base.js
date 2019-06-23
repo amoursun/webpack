@@ -26,8 +26,12 @@ const babelBase = isDev => {
   let rules = [
     {
       test: /\.jsx?$/,
-      exclude: [config.PATH.projectNodeModules],// 屏蔽不需要处理的文件（文件夹）（可选）
-      include: [config.PATH.src],
+      exclude: [
+        config.PATH.projectNodeModules
+      ],// 屏蔽不需要处理的文件（文件夹）（可选）
+      include: [
+        config.PATH.frontend
+      ],
       loader: 'babel-loader',
       options: Object.assign({
         cacheDirectory: true

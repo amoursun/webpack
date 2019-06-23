@@ -49,7 +49,7 @@ config.PATH.frontend = utils.p(config.PATH.src + '/frontend/');
 config.PATH.config = utils.p(config.PATH.src + '/config/');
 config.PATH.projectNodeModules = utils.p(config.ROOT + '/node_modules');
 config.PATH.frontendNodeModules = utils.p(config.PATH.frontend + '/node_modules');
-config.PATH.extra = utils.p(config.PATH.frontend + '/extra/');
+config.PATH.extraFrontend = utils.p(config.PATH.frontend + '/extra/');
 
 config.PATH.dest = utils.p(config.ROOT + '/dest/');
 
