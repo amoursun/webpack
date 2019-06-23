@@ -161,9 +161,14 @@ module.exports = function (options) {
         nodeEnv: 'production',
         noEmitOnErrors: true, // 替换 new webpack.NoEmitOnErrorsPlugin()
         concatenateModules: true, // 替换 new webpack.optimize.ModuleConcatenationPlugin(),// 预编译
+        /**
+         * runtimeChunk.name 会抽取模块下公共部分, 命名为 output.filename的[name]引入
+         * runtimeChunk.name = common => common.bundle.xxxxxx(hash).js
+         * runtimeChunk.name = manifest => manifest.bundle.xxxxxx(hash).js
+         */
         runtimeChunk: {
-          name: 'manifest'
-        },// TODO 会抽取项目公共资源??
+          name: 'common'
+        },
         // runtimeChunk: "single"
         // 等价于
         // runtimeChunk: {
@@ -180,44 +185,45 @@ module.exports = function (options) {
           }),
           new OptimizeCSSAssetsPlugin({}),
         ],
-        splitChunks: {
-          name: 'common'
-        },
         // splitChunks: {
-        //   minSize: 30000,
-        //   minChunks: 1,
-        //   maxAsyncRequests: 5,
-        //   maxInitialRequests: 3,
-        //   name: false, // 抽取出来文件的名字，默认为 true，表示自动生成文件名；
-        //   cacheGroups: {
-        //     vendor: {
-        //       chunks: 'all',
-        //       test: /[\\/]node_modules[\\/]/,
-        //       name: 'vendor',
-        //       minChunks: 1,
-        //       maxInitialRequests: 5,
-        //       minSize: 0,
-        //       priority: 100,
-        //     },
-        //     common: {
-        //       chunks: 'all',
-        //       test: /[\\/]src[\\/]/,
-        //       name: 'common',
-        //       minChunks: 2,
-        //       maxInitialRequests: 5,
-        //       minSize: 0,
-        //       priority: 1,
-        //     },
-        //     // styles: {
-        //     //   name: 'styles',
-        //     //   test: /\.css|less$/,
-        //     //   chunks: 'all',
-        //     //   minChunks: 1,
-        //     //   reuseExistingChunk: true,
-        //     //   enforce: true,
-        //     // }
-        //   }
-        // }
+        //   name: 'common'
+        // },
+        // 下面这个会抽离的给细致
+        splitChunks: {
+          minSize: 30000,
+          minChunks: 1,
+          maxAsyncRequests: 5,
+          maxInitialRequests: 3,
+          name: false, // 抽取出来文件的名字，默认为 true，表示自动生成文件名；
+          cacheGroups: {
+            vendor: {
+              chunks: 'all',
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendor',
+              minChunks: 1,
+              maxInitialRequests: 5,
+              minSize: 0,
+              priority: 100,
+            },
+            common: {
+              chunks: 'all',
+              test: /[\\/]src[\\/]/,
+              name: 'common',
+              minChunks: 2,
+              maxInitialRequests: 5,
+              minSize: 0,
+              priority: 1,
+            },
+            // styles: {
+            //   name: 'styles',
+            //   test: /\.css|less$/,
+            //   chunks: 'all',
+            //   minChunks: 1,
+            //   reuseExistingChunk: true,
+            //   enforce: true,
+            // }
+          }
+        }
       },
       // loader
       // module: {
