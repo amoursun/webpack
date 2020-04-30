@@ -89,7 +89,7 @@
     "detect-browser": "^4.5.0",
     "echarts": "^4.2.1",
     "history": "^4.9.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
